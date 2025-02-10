@@ -1,38 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Admin Paneli</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli - Volatilite ve Faiz Güncelleme</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <h1>Admin Paneli</h1>
-    <label>Dayanak Varlık:</label>
-    <select id="asset">
-        <option value="XU100">XU100</option>
-        <option value="USDTRY">USD/TRY</option>
-        <option value="EURTRY">EUR/TRY</option>
-        <option value="SP500">S&P 500</option>
-        <option value="GOLD">Altın</option>
-    </select>
-    <label>Volatilite:</label>
-    <input type="number" step="0.01" id="volatility">
-    <label>Faiz Oranı:</label>
-    <input type="number" step="0.01" id="interest_rate">
+
+    <!-- Faiz Oranı Girişi -->
+    <label for="interest_rate">Faiz Oranı (%):</label>
+    <input type="number" step="0.01" id="interest_rate" placeholder="Örn: 5.0" />
+
+    <h2>Dayanak Varlıklar ve Volatilite Değerleri</h2>
+
+    <!-- Dayanak Varlıklar ve Volatilite Listesi -->
+    <div id="assets_list"></div>
+
     <button onclick="updateParameters()">Güncelle</button>
 
-    <script>
-        function updateParameters() {
-            const requestData = {
-                asset: document.getElementById("asset").value,
-                volatility: parseFloat(document.getElementById("volatility").value),
-                interest_rate: parseFloat(document.getElementById("interest_rate").value)
-            };
+    <div id="message"></div>
 
-            fetch("http://127.0.0.1:8000/update_parameters", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(requestData)
-            });
+    <script>
+        // Varsayılan veriler
+        const optionData = JSON.parse(localStorage.getItem("optionData")) || {
+            interest_rate: 5.0,
+            assets: {
+                "XU100": 0.20,
+                "USDTRY": 0.15,
+                "EURTRY": 0.18,
+                "SP500": 0.25,
+                "GOLD": 0.10,
+                "BTCUSD": 0.50,
+                "ETHUSD": 0.40,
+                "NASDAQ": 0.22,
+                "DAX": 0.18,
+                "BIST30": 0.30,
+                "BISTBANK": 0.28,
+                "SILVER": 0.12,
+                "COPPER": 0.14,
+                "PLATINUM": 0.16,
+                "OIL": 0.35,
+                "NATGAS": 0.45,
+                "WHEAT": 0.20,
+                "CORN": 0.19,
+                "SOYBEAN": 0.21,
+                "COTTON": 0.17,
+                "COFFEE": 0.23,
+                "SUGAR": 0.26,
+                "RUBBER": 0.29,
+                "NIKKEI": 0.20,
+                "HANGSENG": 0.24,
+                "SHANGHAI": 0.22,
+                "USDJPY": 0.14,
+                "EURUSD": 0.12,
+                "GBPUSD": 0.18,
+                "AUDUSD": 0.16
+            }
+        };
+
+        // HTML'e volatilite giriş alanlarını ekleyelim
+        function loadAssets() {
+            document.getElementById("interest_rate").value = optionData.interest_rate;
+
+            const assetsDiv = document.getElementById("assets_list");
+            assetsDiv.innerHTML = "";
+
+            for (let asset in optionData.assets) {
+                const assetRow = document.createElement("div");
+                assetRow.style.marginBottom = "10px";
+
+                const label = document.createElement("label");
+                label.innerText = asset;
+                label.style.display = "inline-block";
+                label.style.width = "100px";
+                label.style.fontWeight = "bold";
+
+                const input = document.createElement("input");
+                input.type = "number";
+                input.step = "0.01";
+                input.value = optionData.assets[asset];
+                input.id = `volatility_${asset}`;
+                input.style.width = "100px";
+
+                assetRow.appendChild(label);
+                assetRow.appendChild(input);
+                assetsDiv.appendChild(assetRow);
+            }
         }
+
+        // Güncelleme butonuna basıldığında
+        function updateParameters() {
+            const newInterestRate = parseFloat(document.getElementById("interest_rate").value);
+            optionData.interest_rate = newInterestRate;
+
+            for (let asset in optionData.assets) {
+                const newVolatility = parseFloat(document.getElementById(`volatility_${asset}`).value);
+                optionData.assets[asset] = newVolatility;
+            }
+
+            // Tarayıcıda sakla
+            localStorage.setItem("optionData", JSON.stringify(optionData));
+
+            document.getElementById("message").innerText = "Güncelleme Başarılı!";
+            document.getElementById("message").style.color = "green";
+        }
+
+        // Sayfa açıldığında verileri yükle
+        window.onload = loadAssets;
     </script>
+
 </body>
 </html>
