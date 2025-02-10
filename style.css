@@ -13,17 +13,29 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Konteyner */
+.container {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    width: 60%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 /* Form Kutuları */
 label {
     font-weight: bold;
     display: block;
     margin: 10px 0 5px;
+    text-align: left;
+    font-size: 14px;
 }
 
 input, select {
-    width: 80%;
+    width: 100%;
     padding: 10px;
-    margin: 5px 0;
+    margin: 5px 0 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
@@ -38,15 +50,16 @@ input[readonly] {
 
 /* Buton */
 button {
-    width: 85%;
+    width: 100%;
     padding: 12px;
     background-color: #007BFF;
     color: white;
     font-size: 16px;
     border: none;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
     border-radius: 5px;
+    transition: 0.3s;
 }
 
 button:hover {
@@ -54,17 +67,34 @@ button:hover {
 }
 
 /* Sonuç Bölümü */
-#result {
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #28a745;
+.container h2 {
+    color: #007BFF;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ddd;
     padding: 10px;
-    background-color: white;
+    text-align: center;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* Grafik Konteyneri */
+canvas {
+    max-width: 80%;
+    margin-top: 20px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid #ccc;
-    display: inline-block;
+    background: white;
+    padding: 10px;
 }
