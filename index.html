@@ -4,51 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Opsiyon Fiyatlama</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <h1>Opsiyon Fiyatlama</h1>
-    <label>Dayanak Varlık:</label>
+
+    <!-- Dayanak Varlık Seçimi -->
+    <label for="asset">Dayanak Varlık:</label>
     <select id="asset">
-        <option value="XU100">XU100</option>
-        <option value="USDTRY">USD/TRY</option>
-        <option value="EURTRY">EUR/TRY</option>
-        <option value="SP500">S&P 500</option>
-        <option value="GOLD">Altın</option>
+        <option value="AKBNK">AKBNK</option>
+        <option value="ALARK">ALARK</option>
+        <option value="ARCLK">ARCLK</option>
+        <option value="ASELS">ASELS</option>
+        <option value="BIMAS">BIMAS</option>
+        <option value="EKGYO">EKGYO</option>
+        <option value="ENKAI">ENKAI</option>
+        <option value="EREGL">EREGL</option>
+        <option value="FROTO">FROTO</option>
+        <option value="GARAN">GARAN</option>
+        <option value="HALKB">HALKB</option>
+        <option value="ISCTR">ISCTR</option>
+        <option value="KCHOL">KCHOL</option>
+        <option value="KRDMD">KRDMD</option>
+        <option value="PETKM">PETKM</option>
+        <option value="PGSUS">PGSUS</option>
+        <option value="SAHOL">SAHOL</option>
+        <option value="SISE">SISE</option>
+        <option value="TAVHL">TAVHL</option>
+        <option value="TCELL">TCELL</option>
+        <option value="THYAO">THYAO</option>
+        <option value="TOASO">TOASO</option>
+        <option value="TTKOM">TTKOM</option>
+        <option value="TUPRS">TUPRS</option>
+        <option value="USDTRY">USDTRY</option>
+        <option value="VAKBN">VAKBN</option>
+        <option value="XU030">XU030</option>
+        <option value="YKBNK">YKBNK</option>
     </select>
-    <label>Vade (gün):</label>
-    <input type="number" id="expiry">
-    <label>Strike:</label>
-    <input type="number" id="strike">
-    <label>Spot:</label>
-    <input type="number" id="spot">
-    <label>Opsiyon Türü:</label>
+
+    <!-- Call/Put Seçimi -->
+    <label for="option_type">Opsiyon Türü:</label>
     <select id="option_type">
         <option value="call">Call</option>
         <option value="put">Put</option>
     </select>
+
+    <!-- Strike Fiyatı -->
+    <label for="strike">Kullanım Fiyatı (Strike):</label>
+    <input type="number" id="strike" placeholder="Örn: 5000" />
+
+    <!-- Vade Sonu Tarihi -->
+    <label for="expiry">Vade Sonu Tarihi:</label>
+    <input type="date" id="expiry" />
+
     <button onclick="calculateOption()">Hesapla</button>
+
     <div id="result"></div>
 
     <script>
         function calculateOption() {
-            const requestData = {
-                asset: document.getElementById("asset").value,
-                expiry_days: parseInt(document.getElementById("expiry").value),
-                strike: parseFloat(document.getElementById("strike").value),
-                spot_price: parseFloat(document.getElementById("spot").value),
-                option_type: document.getElementById("option_type").value
-            };
+            const asset = document.getElementById("asset").value;
+            const optionType = document.getElementById("option_type").value;
+            const strike = parseFloat(document.getElementById("strike").value);
+            const expiry = document.getElementById("expiry").value;
 
-            fetch("http://127.0.0.1:8000/price_option", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(requestData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("result").innerText = "Opsiyon Fiyatı: " + data.price.toFixed(2);
-            });
+            if (!asset || !optionType || !strike || !expiry) {
+                alert("Lütfen tüm alanları doldurun.");
+                return;
+            }
+
+            document.getElementById("result").innerText = `Seçiminiz: ${asset}, ${optionType.toUpperCase()}, Strike: ${strike}, Vade: ${expiry}`;
         }
     </script>
+
 </body>
 </html>
