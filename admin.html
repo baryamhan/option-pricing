@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Paneli</title>
+</head>
+<body>
+    <h1>Admin Paneli</h1>
+    <label>Dayanak Varlık:</label>
+    <select id="asset">
+        <option value="XU100">XU100</option>
+        <option value="USDTRY">USD/TRY</option>
+        <option value="EURTRY">EUR/TRY</option>
+        <option value="SP500">S&P 500</option>
+        <option value="GOLD">Altın</option>
+    </select>
+    <label>Volatilite:</label>
+    <input type="number" step="0.01" id="volatility">
+    <label>Faiz Oranı:</label>
+    <input type="number" step="0.01" id="interest_rate">
+    <button onclick="updateParameters()">Güncelle</button>
+
+    <script>
+        function updateParameters() {
+            const requestData = {
+                asset: document.getElementById("asset").value,
+                volatility: parseFloat(document.getElementById("volatility").value),
+                interest_rate: parseFloat(document.getElementById("interest_rate").value)
+            };
+
+            fetch("http://127.0.0.1:8000/update_parameters", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestData)
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "interest_rate": 5.0,
+  "assets": {
+    "XU100": 0.20,
+    "USDTRY": 0.15,
+    "EURTRY": 0.18,
+    "SP500": 0.25,
+    "GOLD": 0.10
+  }
+}
