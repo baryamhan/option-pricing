@@ -15,18 +15,18 @@ h1, h2 {
 /* Form Alanları */
 label {
     font-weight: bold;
-    display: inline-block;
+    display: block;
     margin-top: 10px;
 }
 
-input {
+input, select {
     padding: 8px;
-    margin: 5px 0;
+    margin: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-/* Butonlar */
+/* Buton */
 button {
     width: 80%;
     padding: 10px;
@@ -41,10 +41,20 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Sonuç Bölümü */
-#message {
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    color: green;
+/* Tablo Stili */
+table {
+    width: 90%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
 }
