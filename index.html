@@ -12,35 +12,35 @@
 
     <!-- Dayanak Varlık Seçimi -->
     <label for="asset">Dayanak Varlık:</label>
-    <select id="asset">
-        <option value="AKBNK">AKBNK</option>
-        <option value="ALARK">ALARK</option>
-        <option value="ARCLK">ARCLK</option>
-        <option value="ASELS">ASELS</option>
-        <option value="BIMAS">BIMAS</option>
-        <option value="EKGYO">EKGYO</option>
-        <option value="ENKAI">ENKAI</option>
-        <option value="EREGL">EREGL</option>
-        <option value="FROTO">FROTO</option>
-        <option value="GARAN">GARAN</option>
-        <option value="HALKB">HALKB</option>
-        <option value="ISCTR">ISCTR</option>
-        <option value="KCHOL">KCHOL</option>
-        <option value="KRDMD">KRDMD</option>
-        <option value="PETKM">PETKM</option>
-        <option value="PGSUS">PGSUS</option>
-        <option value="SAHOL">SAHOL</option>
-        <option value="SISE">SISE</option>
-        <option value="TAVHL">TAVHL</option>
-        <option value="TCELL">TCELL</option>
-        <option value="THYAO">THYAO</option>
-        <option value="TOASO">TOASO</option>
-        <option value="TTKOM">TTKOM</option>
-        <option value="TUPRS">TUPRS</option>
-        <option value="USDTRY">USDTRY</option>
-        <option value="VAKBN">VAKBN</option>
-        <option value="XU030">XU030</option>
-        <option value="YKBNK">YKBNK</option>
+    <select id="asset" onchange="fetchStockPrice()">
+        <option value="AKBNK.IS">AKBNK</option>
+        <option value="ALARK.IS">ALARK</option>
+        <option value="ARCLK.IS">ARCLK</option>
+        <option value="ASELS.IS">ASELS</option>
+        <option value="BIMAS.IS">BIMAS</option>
+        <option value="EKGYO.IS">EKGYO</option>
+        <option value="ENKAI.IS">ENKAI</option>
+        <option value="EREGL.IS">EREGL</option>
+        <option value="FROTO.IS">FROTO</option>
+        <option value="GARAN.IS">GARAN</option>
+        <option value="HALKB.IS">HALKB</option>
+        <option value="ISCTR.IS">ISCTR</option>
+        <option value="KCHOL.IS">KCHOL</option>
+        <option value="KRDMD.IS">KRDMD</option>
+        <option value="PETKM.IS">PETKM</option>
+        <option value="PGSUS.IS">PGSUS</option>
+        <option value="SAHOL.IS">SAHOL</option>
+        <option value="SISE.IS">SISE</option>
+        <option value="TAVHL.IS">TAVHL</option>
+        <option value="TCELL.IS">TCELL</option>
+        <option value="THYAO.IS">THYAO</option>
+        <option value="TOASO.IS">TOASO</option>
+        <option value="TTKOM.IS">TTKOM</option>
+        <option value="TUPRS.IS">TUPRS</option>
+        <option value="USDTRY=X">USDTRY</option>
+        <option value="VAKBN.IS">VAKBN</option>
+        <option value="XU030.IS">XU030</option>
+        <option value="YKBNK.IS">YKBNK</option>
     </select>
 
     <!-- Call/Put Seçimi -->
@@ -49,6 +49,10 @@
         <option value="call">Call</option>
         <option value="put">Put</option>
     </select>
+
+    <!-- Spot Fiyat (Otomatik Güncellenecek) -->
+    <label for="spot">Spot Fiyat:</label>
+    <input type="number" id="spot" readonly />
 
     <!-- Strike Fiyatı -->
     <label for="strike">Kullanım Fiyatı (Strike):</label>
@@ -63,18 +67,43 @@
     <div id="result"></div>
 
     <script>
+        async function fetchStockPrice() {
+            const asset = document.getElementById("asset").value;
+            const url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${asset}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "X-RapidAPI-Key": "373fca70a5msh77cea3971d38250p18a642jsn57bfae126a2e",
+                        "X-RapidAPI-Host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
+                    }
+                });
+
+                const data = await response.json();
+                const stockPrice = data.quoteResponse.result[0].regularMarketPrice;
+
+                // Spot fiyatı güncelle
+                document.getElementById("spot").value = stockPrice.toFixed(2);
+            } catch (error) {
+                console.error("Fiyat çekme hatası:", error);
+                document.getElementById("spot").value = "Hata";
+            }
+        }
+
         function calculateOption() {
             const asset = document.getElementById("asset").value;
             const optionType = document.getElementById("option_type").value;
+            const spot = parseFloat(document.getElementById("spot").value);
             const strike = parseFloat(document.getElementById("strike").value);
             const expiry = document.getElementById("expiry").value;
 
-            if (!asset || !optionType || !strike || !expiry) {
+            if (!asset || !optionType || !spot || !strike || !expiry) {
                 alert("Lütfen tüm alanları doldurun.");
                 return;
             }
 
-            document.getElementById("result").innerText = `Seçiminiz: ${asset}, ${optionType.toUpperCase()}, Strike: ${strike}, Vade: ${expiry}`;
+            document.getElementById("result").innerText = `Seçiminiz: ${asset}, ${optionType.toUpperCase()}, Spot: ${spot}, Strike: ${strike}, Vade: ${expiry}`;
         }
     </script>
 
