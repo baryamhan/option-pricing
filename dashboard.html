@@ -160,7 +160,7 @@
             const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
             const strike = parseFloat(document.getElementById("strike").value);
             const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
-            const optionType = document.querySelector('input[name="optionType"]:checked').value;
+	    const optionType = document.getElementById("optionType").value; // Dropdown'dan al
 
             if (isNaN(spotPrice) || isNaN(daysToExpiry) || isNaN(strike) || isNaN(interestRate)) {
                 alert("Lütfen tüm alanları doldurun.");
