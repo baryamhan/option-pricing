@@ -179,7 +179,7 @@ function calculateOptionPrice() {
     const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
     const strike = parseFloat(document.getElementById("strike").value);
     const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
-    
+
     // ✅ Call/Put seçimini `select` kutusundan alıyoruz
     const optionTypeElement = document.getElementById("optionType");
     if (!optionTypeElement) {
@@ -211,16 +211,17 @@ function calculateOptionPrice() {
 
             const volatility = selectedAsset["Volatility (%)"] / 100;
             const dividend = selectedAsset["Dividend"];
-	    const dividendDate = new Date(document.getElementById("dividendDate").value);
+            const dividendDate = new Date(document.getElementById("dividendDate").value);
             const expiryDate = new Date(document.getElementById("expiry").value);
-		
+            
             document.getElementById("volatility").value = (volatility * 100).toFixed(2);
 
-            // ✅ Temettü verimi q = Temettü / Spot Fiyatı
-            const dividendYield = dividend / spotPrice;
-	    if (dividendDate > expiryDate) {
+            // ✅ Eğer temettü tarihi vade sonu tarihinden sonraysa temettü verimi = 0
+            let dividendYield = dividend / spotPrice;
+            if (dividendDate > expiryDate) {
                 dividendYield = 0;
             }
+
             // ✅ Vadeye kalan süre yıl cinsinden
             const T = daysToExpiry / 365;
 
@@ -249,6 +250,7 @@ function calculateOptionPrice() {
             alert("Veriler yüklenirken hata oluştu.");
         });
 }
+
 
 
         function logout() {
