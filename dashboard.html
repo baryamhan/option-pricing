@@ -130,6 +130,33 @@
             }
         }
 
+	function calculateDaysToExpiry() {
+        const expiryInput = document.getElementById("expiry").value;
+
+        if (!expiryInput) {
+            document.getElementById("daysToExpiry").value = "";
+            return;
+        }
+
+        const expiryDate = new Date(expiryInput);
+        const today = new Date();
+
+        // Sadece tarih kısmını al (saat farkları sorun yaratmasın)
+        const timeDiff = expiryDate.setHours(0, 0, 0, 0) - today.setHours(0, 0, 0, 0);
+        const daysToExpiry = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+        if (daysToExpiry < 0) {
+            alert("Seçilen vade tarihi geçmiş olamaz!");
+            document.getElementById("expiry").value = "";
+            document.getElementById("daysToExpiry").value = "";
+            return;
+        }
+
+        document.getElementById("daysToExpiry").value = daysToExpiry;
+    }
+
+    document.getElementById("expiry").addEventListener("change", calculateDaysToExpiry);
+
         function calculateOptionPrice() {
             const asset = document.getElementById("asset").value;
             const spotPrice = parseFloat(document.getElementById("spotPrice").value);
