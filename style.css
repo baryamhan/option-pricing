@@ -46,6 +46,7 @@ input, select {
 /* Hesapla Butonu */
 button {
     margin-top: 20px;
+    margin-bottom: 20px;
     background-color: #a10000;
     color: white;
     border: none;
