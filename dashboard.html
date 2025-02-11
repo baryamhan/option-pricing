@@ -40,8 +40,8 @@
 
         // Kullanıcıya göre JSON dosyasını belirle
         const jsonFile = loggedInUser === "YBA" 
-            ? "https://github.com/baryamhan/option-pricing/blob/802c6e688662016874e1375e30cd35c429290e41/yba.json" 
-            : "https://github.com/baryamhan/option-pricing/blob/802c6e688662016874e1375e30cd35c429290e41/sube.json";
+            ? "https://raw.githubusercontent.com/baryamhan/option-pricing/refs/heads/main/yba.json" 
+            : "https://raw.githubusercontent.com/baryamhan/option-pricing/refs/heads/main/sube.json";
 
         // JSON verisini çek ve ekrana yaz
         async function fetchData() {
