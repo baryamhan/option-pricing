@@ -3,170 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opsiyon Fiyatlama</title>
+    <title>Giriş Yap</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <h1>Opsiyon Fiyatlama</h1>
+    <div class="login-container">
+        <h2>Giriş Yap</h2>
+        <label for="username">Kullanıcı Adı:</label>
+        <input type="text" id="username" placeholder="Kullanıcı Adınızı Girin">
 
-    <div class="container">
-        <h2>Girdi Parametreleri</h2>
+        <label for="password">Şifre:</label>
+        <input type="password" id="password" placeholder="Şifrenizi Girin">
 
-        <!-- Dayanak Varlık Seçimi -->
-        <label for="asset">Dayanak Varlık:</label>
-        <select id="asset" onchange="fetchStockPrice()">
-            <option value="AKBNK.IS">AKBNK</option>
-            <option value="ALARK.IS">ALARK</option>
-            <option value="ARCLK.IS">ARCLK</option>
-            <option value="ASELS.IS">ASELS</option>
-            <option value="BIMAS.IS">BIMAS</option>
-            <option value="USDTRY=X">USDTRY</option>
-        </select>
+        <button onclick="login()">Giriş Yap</button>
 
-        <!-- Call/Put Seçimi -->
-        <label for="option_type">Opsiyon Türü:</label>
-        <select id="option_type">
-            <option value="call">Call</option>
-            <option value="put">Put</option>
-        </select>
-
-        <!-- Spot Fiyat (Otomatik Güncellenecek) -->
-        <label for="spot">Spot Fiyat:</label>
-        <input type="number" id="spot" readonly />
-
-        <!-- Strike Fiyatı -->
-        <label for="strike">Kullanım Fiyatı (Strike):</label>
-        <input type="number" id="strike" placeholder="Örn: 5000" />
-
-        <!-- Vade Sonu Tarihi -->
-        <label for="expiry">Vade Sonu Tarihi:</label>
-        <input type="date" id="expiry" />
-
-        <!-- Volatilite -->
-        <label for="volatility">Volatilite (%):</label>
-        <input type="number" id="volatility" placeholder="Örn: 20.0" />
-
-        <!-- Faiz Oranı -->
-        <label for="interest_rate">Faiz Oranı (%):</label>
-        <input type="number" id="interest_rate" placeholder="Örn: 5.0" />
-
-        <button onclick="calculateOption()">Hesapla</button>
+        <p id="login-message" style="color: red;"></p>
     </div>
-
-    <div class="container">
-        <h2>Sonuçlar</h2>
-        <table>
-            <tr>
-                <th>Parametre</th>
-                <th>Değer</th>
-            </tr>
-            <tr>
-                <td>Opsiyon Fiyatı</td>
-                <td id="option_price">-</td>
-            </tr>
-            <tr>
-                <td>Delta</td>
-                <td id="delta">-</td>
-            </tr>
-            <tr>
-                <td>Gamma</td>
-                <td id="gamma">-</td>
-            </tr>
-            <tr>
-                <td>Vega</td>
-                <td id="vega">-</td>
-            </tr>
-            <tr>
-                <td>Theta</td>
-                <td id="theta">-</td>
-            </tr>
-            <tr>
-                <td>Rho</td>
-                <td id="rho">-</td>
-            </tr>
-        </table>
-    </div>
-
-    <h2>Grafikler</h2>
-    <canvas id="optionPriceChart"></canvas>
-    <canvas id="greeksChart"></canvas>
 
     <script>
-        async function fetchStockPrice() {
-            const asset = document.getElementById("asset").value;
-            const url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${asset}`;
+        function login() {
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
 
-            try {
-                const response = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "X-RapidAPI-Key": "373fca70a5msh77cea3971d38250p18a642jsn57bfae126a2e",
-                        "X-RapidAPI-Host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
-                    }
-                });
+            // Kullanıcı listesi
+            const users = {
+                "YBA": "turev",
+                "sube": "turev"
+            };
 
-                const data = await response.json();
-                const stockPrice = data.quoteResponse.result[0].regularMarketPrice;
-                document.getElementById("spot").value = stockPrice.toFixed(2);
-            } catch (error) {
-                console.error("Fiyat çekme hatası:", error);
-                document.getElementById("spot").value = "Hata";
-            }
-        }
-
-        function normalCDF(x) {
-            return (1.0 + Math.erf(x / Math.sqrt(2))) / 2.0;
-        }
-
-        function calculateOption() {
-            const optionType = document.getElementById("option_type").value;
-            const spot = parseFloat(document.getElementById("spot").value);
-            const strike = parseFloat(document.getElementById("strike").value);
-            const expiry = new Date(document.getElementById("expiry").value);
-            const volatility = parseFloat(document.getElementById("volatility").value) / 100;
-            const interestRate = parseFloat(document.getElementById("interest_rate").value) / 100;
-
-            if (!optionType || isNaN(spot) || isNaN(strike) || isNaN(volatility) || isNaN(interestRate) || isNaN(expiry.getTime())) {
-                alert("Lütfen tüm alanları doğru şekilde doldurun.");
-                return;
-            }
-
-            const today = new Date();
-            const timeToExpiry = (expiry - today) / (1000 * 60 * 60 * 24 * 365);
-
-            if (timeToExpiry <= 0) {
-                alert("Vade tarihi geçmiş olamaz.");
-                return;
-            }
-
-            const d1 = (Math.log(spot / strike) + (interestRate + (volatility ** 2) / 2) * timeToExpiry) / (volatility * Math.sqrt(timeToExpiry));
-            const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
-
-            let optionPrice, delta, gamma, vega, theta, rho;
-
-            if (optionType === "call") {
-                optionPrice = spot * normalCDF(d1) - strike * Math.exp(-interestRate * timeToExpiry) * normalCDF(d2);
-                delta = normalCDF(d1);
-                rho = strike * timeToExpiry * Math.exp(-interestRate * timeToExpiry) * normalCDF(d2) / 100;
+            if (users[username] && users[username] === password) {
+                // Başarılı giriş, kullanıcıyı yönlendir
+                localStorage.setItem("loggedInUser", username);
+                window.location.href = "dashboard.html"; // Giriş sonrası yönlendirilecek sayfa
             } else {
-                optionPrice = strike * Math.exp(-interestRate * timeToExpiry) * normalCDF(-d2) - spot * normalCDF(-d1);
-                delta = normalCDF(d1) - 1;
-                rho = -strike * timeToExpiry * Math.exp(-interestRate * timeToExpiry) * normalCDF(-d2) / 100;
+                document.getElementById("login-message").innerText = "Geçersiz kullanıcı adı veya şifre!";
             }
-
-            gamma = Math.exp(-d1 ** 2 / 2) / (spot * volatility * Math.sqrt(2 * Math.PI * timeToExpiry));
-            vega = spot * Math.sqrt(timeToExpiry) * Math.exp(-d1 ** 2 / 2) / Math.sqrt(2 * Math.PI);
-            theta = (-spot * volatility * Math.exp(-d1 ** 2 / 2) / (2 * Math.sqrt(2 * Math.PI * timeToExpiry))) -
-                    (interestRate * strike * Math.exp(-interestRate * timeToExpiry) * normalCDF(optionType === "call" ? d2 : -d2)) / 365;
-
-            document.getElementById("option_price").innerText = optionPrice.toFixed(2);
-            document.getElementById("delta").innerText = delta.toFixed(4);
-            document.getElementById("gamma").innerText = gamma.toFixed(4);
-            document.getElementById("vega").innerText = vega.toFixed(4);
-            document.getElementById("theta").innerText = theta.toFixed(4);
-            document.getElementById("rho").innerText = rho.toFixed(4);
         }
     </script>
 
