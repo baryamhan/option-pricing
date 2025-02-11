@@ -12,6 +12,8 @@
         <h2>Hoş Geldiniz, <span id="username"></span></h2>
         <p>Aşağıda en güncel verileriniz bulunmaktadır:</p>
 
+        <p><strong>Faiz Oranı (%):</strong> <span id="interest-rate"></span></p>
+
         <table id="data-table">
             <thead>
                 <tr>
@@ -29,37 +31,60 @@
 
     <script>
         // Kullanıcının giriş yapıp yapmadığını kontrol et
-        const loggedInUser = localStorage.getItem("loggedInUser");
+        document.addEventListener("DOMContentLoaded", () => {
+            const loggedInUser = localStorage.getItem("loggedInUser");
 
-        if (!loggedInUser) {
-            window.location.href = "index.html"; // Eğer giriş yapılmamışsa, giriş sayfasına yönlendir
+            if (!loggedInUser) {
+                alert("Lütfen önce giriş yapın!"); // Kullanıcıyı uyar
+                window.location.href = "index.html"; // Giriş sayfasına yönlendir
+            } else {
+                document.getElementById("username").innerText = loggedInUser;
+                loadDataForUser(loggedInUser);
+            }
+        });
+
+        function loadDataForUser(user) {
+            // Kullanıcıya göre JSON dosyasını belirle
+            const jsonFile = user === "YBA" 
+                ? "https://raw.githubusercontent.com/baryamhan/option-pricing/main/yba.json" 
+                : "https://raw.githubusercontent.com/baryamhan/option-pricing/main/sube.json";
+
+            fetchData(jsonFile);
         }
 
-        // Kullanıcı adını ekrana yaz
-        document.getElementById("username").innerText = loggedInUser;
-
-        // Kullanıcıya göre JSON dosyasını belirle
-        const jsonFile = loggedInUser === "YBA" 
-            ? "https://raw.githubusercontent.com/baryamhan/option-pricing/refs/heads/main/yba.json" 
-            : "https://raw.githubusercontent.com/baryamhan/option-pricing/refs/heads/main/sube.json";
-
-        // JSON verisini çek ve ekrana yaz
-        async function fetchData() {
+        async function fetchData(jsonFile) {
             try {
+                console.log("JSON URL:", jsonFile); // Konsola yazdır (Hangi URL kullanılıyor görmek için)
                 const response = await fetch(jsonFile);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP Hatası! Durum: ${response.status}`);
+                }
+
                 const data = await response.json();
+                console.log("JSON Verisi:", data); // Konsola JSON içeriğini yazdır
 
                 const tableBody = document.querySelector("#data-table tbody");
                 tableBody.innerHTML = ""; // Önce tabloyu temizle
 
-                Object.keys(data.assets).forEach(asset => {
+                // Faiz oranını al (her satırda olduğu için ilk satırdan çekiyoruz)
+                const interestRate = data[0]["Interest Rate (%)"];
+                document.getElementById("interest-rate").innerText = interestRate;
+
+                // JSON içindeki her varlığı tabloya ekle
+                data.forEach(item => {
                     const row = document.createElement("tr");
 
+                    // Excel tarih formatını YYYY-MM-DD'ye çevirme (45823 → 2025-06-15)
+                    const excelBaseDate = new Date(1899, 11, 30);
+                    const properDate = new Date(excelBaseDate.getTime() + item["Dividend Date"] * 86400000);
+                    const formattedDate = properDate.toISOString().split('T')[0];
+
                     row.innerHTML = `
-                        <td>${asset}</td>
-                        <td>${data.assets[asset].volatility}</td>
-                        <td>${data.assets[asset].dividend}</td>
-                        <td>${data.assets[asset].date}</td>
+                        <td>${item["Asset"]}</td>
+                        <td>${item["Volatility (%)"]}</td>
+                        <td>${item["Dividend"]}</td>
+                        <td>${formattedDate}</td>
                     `;
 
                     tableBody.appendChild(row);
@@ -67,16 +92,13 @@
 
             } catch (error) {
                 console.error("JSON verisi çekilemedi:", error);
+                alert("Verileri yüklerken hata oluştu.");
             }
         }
 
-        // Sayfa yüklendiğinde JSON verilerini çek
-        window.onload = fetchData;
-
-        // Çıkış yapma fonksiyonu
         function logout() {
             localStorage.removeItem("loggedInUser");
-            window.location.href = "index.html"; // Çıkış yaptıktan sonra giriş sayfasına yönlendir
+            window.location.href = "index.html";
         }
     </script>
 
