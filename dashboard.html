@@ -211,6 +211,9 @@ function calculateOptionPrice() {
 
             const volatility = selectedAsset["Volatility (%)"] / 100;
             const dividend = selectedAsset["Dividend"];
+	    const dividendDate = new Date(document.getElementById("dividendDate").value);
+            const expiryDate = new Date(document.getElementById("expiry").value);
+		
             document.getElementById("volatility").value = (volatility * 100).toFixed(2);
 
             // ✅ Temettü verimi q = Temettü / Spot Fiyatı
