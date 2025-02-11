@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veri Paneli</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <h2>Hoş Geldiniz, <span id="username"></span></h2>
+        <p>Aşağıda en güncel verileriniz bulunmaktadır:</p>
+
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Dayanak Varlık</th>
+                    <th>Volatilite (%)</th>
+                    <th>Temettü (%)</th>
+                    <th>Temettü Tarihi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <button onclick="logout()">Çıkış Yap</button>
+    </div>
+
+    <script>
+        // Kullanıcının giriş yapıp yapmadığını kontrol et
+        const loggedInUser = localStorage.getItem("loggedInUser");
+
+        if (!loggedInUser) {
+            window.location.href = "index.html"; // Eğer giriş yapılmamışsa, giriş sayfasına yönlendir
+        }
+
+        // Kullanıcı adını ekrana yaz
+        document.getElementById("username").innerText = loggedInUser;
+
+        // Kullanıcıya göre JSON dosyasını belirle
+        const jsonFile = loggedInUser === "YBA" 
+            ? "https://github.com/baryamhan/option-pricing/blob/802c6e688662016874e1375e30cd35c429290e41/yba.json" 
+            : "https://github.com/baryamhan/option-pricing/blob/802c6e688662016874e1375e30cd35c429290e41/sube.json";
+
+        // JSON verisini çek ve ekrana yaz
+        async function fetchData() {
+            try {
+                const response = await fetch(jsonFile);
+                const data = await response.json();
+
+                const tableBody = document.querySelector("#data-table tbody");
+                tableBody.innerHTML = ""; // Önce tabloyu temizle
+
+                Object.keys(data.assets).forEach(asset => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${asset}</td>
+                        <td>${data.assets[asset].volatility}</td>
+                        <td>${data.assets[asset].dividend}</td>
+                        <td>${data.assets[asset].date}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("JSON verisi çekilemedi:", error);
+            }
+        }
+
+        // Sayfa yüklendiğinde JSON verilerini çek
+        window.onload = fetchData;
+
+        // Çıkış yapma fonksiyonu
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "index.html"; // Çıkış yaptıktan sonra giriş sayfasına yönlendir
+        }
+    </script>
+
+</body>
+</html>
