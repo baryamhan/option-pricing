@@ -38,17 +38,15 @@
             <label for="daysToExpiry">Vadeye Kalan Gün:</label>
             <input type="number" id="daysToExpiry" readonly>
 
-             <!-- Önerilen Volatilite (Başta boş ama kutu görünecek) -->
-            <label for="volatility">Önerilen Volatilite (%):</label>
-            <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek">
-
-            <!-- Hesapla Butonu -->
+            <!-- Hesaplanan Opsiyon Fiyatı -->
             <button type="button" onclick="calculateOptionPrice()">Hesapla</button>
 
-            <!-- Hesaplanan Opsiyon Fiyatı -->
-            <div class="result-box">
-                <label>Opsiyon Önerilen Fiyatı:</label>
-                <input type="text" id="optionPrice" readonly class="bold-result">
+            <!-- Hesaplamadan sonra görünmesi gereken alanlar -->
+            <div id="calculatedFields" style="display: none;">
+                <label for="volatility">Önerilen Volatilite (%):</label>
+                <input type="number" id="volatility" readonly>
+
+                <h3>Opsiyon Önerilen Fiyatı: <span id="optionPrice">-</span></h3>
             </div>
         </form>
 
