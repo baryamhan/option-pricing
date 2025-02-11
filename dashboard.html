@@ -154,36 +154,58 @@
 
     document.getElementById("expiry").addEventListener("change", calculateDaysToExpiry);
 
-        function calculateOptionPrice() {
-            const asset = document.getElementById("asset").value;
-            const spotPrice = parseFloat(document.getElementById("spotPrice").value);
-            const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
-            const strike = parseFloat(document.getElementById("strike").value);
-            const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
-	    const optionType = document.getElementById("optionType").value; // Dropdown'dan al
+function calculateOptionPrice() {
+    const asset = document.getElementById("asset").value;
+    const spotPrice = parseFloat(document.getElementById("spotPrice").value);
+    const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
+    const strike = parseFloat(document.getElementById("strike").value);
+    const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
 
-            if (isNaN(spotPrice) || isNaN(daysToExpiry) || isNaN(strike) || isNaN(interestRate)) {
-                alert("Lütfen tüm alanları doldurun.");
+    // ✅ Call/Put seçimini `select` kutusundan alıyoruz
+    const optionTypeElement = document.getElementById("optionType");
+    if (!optionTypeElement) {
+        alert("Hata: Call/Put seçimi için 'optionType' bulunamadı!");
+        return;
+    }
+    const optionType = optionTypeElement.value;
+
+    if (isNaN(spotPrice) || isNaN(daysToExpiry) || isNaN(strike) || isNaN(interestRate)) {
+        alert("Lütfen tüm alanları eksiksiz doldurun.");
+        return;
+    }
+
+    // ✅ Kullanıcı giriş bilgisine göre doğru JSON dosyasını seçiyoruz
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    const jsonFile = loggedInUser === "YBA"
+        ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
+        : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
+
+    fetch(jsonFile)
+        .then(response => response.json())
+        .then(data => {
+            const selectedAsset = data.find(item => item["Asset"] === asset);
+
+            if (!selectedAsset) {
+                alert("Hata: Seçili dayanak varlık JSON'da bulunamadı!");
                 return;
             }
 
-            fetch("https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json")
-                .then(response => response.json())
-                .then(data => {
-                    const selectedAsset = data.find(item => item["Asset"] === asset);
-                    const volatility = selectedAsset ? selectedAsset["Volatility (%)"] : 0;
-                    document.getElementById("volatility").value = volatility;
+            const volatility = selectedAsset["Volatility (%)"] || 0;
+            document.getElementById("volatility").value = volatility;
 
-                    let optionPrice = (spotPrice * ( 1 + (interestRate * daysToExpiry / 365)) ) - strike;
+            let optionPrice = (spotPrice * (1 + (interestRate * daysToExpiry / 365))) - strike;
 
-                    if (optionType === "Put") {
-                        optionPrice = optionPrice * -1;
-                    }
+            if (optionType === "Put") {
+                optionPrice = optionPrice * -1;
+            }
 
-                    document.getElementById("optionPrice").value = optionPrice.toFixed(2);
-                })
-                .catch(error => console.error("Hata:", error));
-        }
+            document.getElementById("optionPrice").value = optionPrice.toFixed(2);
+        })
+        .catch(error => {
+            console.error("Hata:", error);
+            alert("Veriler yüklenirken hata oluştu.");
+        });
+}
 
         function logout() {
             localStorage.removeItem("loggedInUser");
