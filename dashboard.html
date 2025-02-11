@@ -215,7 +215,9 @@ function calculateOptionPrice() {
 
             // ✅ Temettü verimi q = Temettü / Spot Fiyatı
             const dividendYield = dividend / spotPrice;
-
+	    if (dividendDate > expiryDate) {
+                dividendYield = 0;
+            }
             // ✅ Vadeye kalan süre yıl cinsinden
             const T = daysToExpiry / 365;
 
