@@ -3,28 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veri Paneli</title>
+    <title>Opsiyon Fiyatlama</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="dashboard-container">
         <h2>Hoş Geldiniz, <span id="username"></span></h2>
-        <p>Aşağıda en güncel verileriniz bulunmaktadır:</p>
 
-        <p><strong>Faiz Oranı (%):</strong> <span id="interest-rate"></span></p>
+        <form id="optionForm">
+            <!-- Dayanak Varlık Seçimi -->
+            <label for="asset">Dayanak Varlık:</label>
+            <select id="asset" onchange="updateAssetDetails()"></select>
 
-        <table id="data-table">
-            <thead>
-                <tr>
-                    <th>Dayanak Varlık</th>
-                    <th>Volatilite (%)</th>
-                    <th>Temettü (%)</th>
-                    <th>Temettü Tarihi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+            <!-- Dayanak Fiyatı (Şimdilik 100, ileride API'den gelecek) -->
+            <label for="spotPrice">Dayanak Fiyatı:</label>
+            <input type="number" id="spotPrice" value="100" readonly>
+
+            <!-- JSON'dan Gelecek Değerler -->
+            <label for="volatility">Önerilen Volatilite (%):</label>
+            <input type="number" id="volatility" readonly>
+
+            <label for="dividend">Temettü Değeri:</label>
+            <input type="number" id="dividend" readonly>
+
+            <label for="dividendDate">Temettü Tarihi:</label>
+            <input type="date" id="dividendDate" readonly>
+
+            <!-- Kullanıcının Gireceği Değerler -->
+            <label for="strike">Kullanım Fiyatı (Strike):</label>
+            <input type="number" id="strike">
+
+            <label for="expiry">Vade Sonu Tarihi:</label>
+            <input type="date" id="expiry" onchange="calculateDaysToExpiry()">
+
+            <!-- Vadeye Kalan Gün Sayısı -->
+            <label for="daysToExpiry">Vadeye Kalan Gün:</label>
+            <input type="number" id="daysToExpiry" readonly>
+
+            <!-- Hesaplanan Opsiyon Fiyatı -->
+            <button type="button" onclick="calculateOptionPrice()">Hesapla</button>
+
+            <h3>Opsiyon Önerilen Fiyatı: <span id="optionPrice">-</span></h3>
+        </form>
 
         <button onclick="logout()">Çıkış Yap</button>
     </div>
@@ -35,8 +56,8 @@
             const loggedInUser = localStorage.getItem("loggedInUser");
 
             if (!loggedInUser) {
-                alert("Lütfen önce giriş yapın!"); // Kullanıcıyı uyar
-                window.location.href = "index.html"; // Giriş sayfasına yönlendir
+                alert("Lütfen önce giriş yapın!");
+                window.location.href = "index.html";
             } else {
                 document.getElementById("username").innerText = loggedInUser;
                 loadDataForUser(loggedInUser);
@@ -46,7 +67,7 @@
         function loadDataForUser(user) {
             // Kullanıcıya göre JSON dosyasını belirle
             const jsonFile = user === "YBA" 
-                ? "https://raw.githubusercontent.com/baryamhan/option-pricing/main/yba.json" 
+                ? "https://raw.githubusercontent.com/baryamhan/option-pricing/main/yba.json"
                 : "https://raw.githubusercontent.com/baryamhan/option-pricing/main/sube.json";
 
             fetchData(jsonFile);
@@ -54,46 +75,72 @@
 
         async function fetchData(jsonFile) {
             try {
-                console.log("JSON URL:", jsonFile); // Konsola yazdır (Hangi URL kullanılıyor görmek için)
                 const response = await fetch(jsonFile);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP Hatası! Durum: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP Hatası! Durum: ${response.status}`);
 
                 const data = await response.json();
-                console.log("JSON Verisi:", data); // Konsola JSON içeriğini yazdır
-
-                const tableBody = document.querySelector("#data-table tbody");
-                tableBody.innerHTML = ""; // Önce tabloyu temizle
-
-                // Faiz oranını al (her satırda olduğu için ilk satırdan çekiyoruz)
-                const interestRate = data[0]["Interest Rate (%)"];
-                document.getElementById("interest-rate").innerText = interestRate;
-
-                // JSON içindeki her varlığı tabloya ekle
-                data.forEach(item => {
-                    const row = document.createElement("tr");
-
-                    // Excel tarih formatını YYYY-MM-DD'ye çevirme (45823 → 2025-06-15)
-                    const excelBaseDate = new Date(1899, 11, 30);
-                    const properDate = new Date(excelBaseDate.getTime() + item["Dividend Date"] * 86400000);
-                    const formattedDate = properDate.toISOString().split('T')[0];
-
-                    row.innerHTML = `
-                        <td>${item["Asset"]}</td>
-                        <td>${item["Volatility (%)"]}</td>
-                        <td>${item["Dividend"]}</td>
-                        <td>${formattedDate}</td>
-                    `;
-
-                    tableBody.appendChild(row);
-                });
-
+                populateAssetDropdown(data);
             } catch (error) {
                 console.error("JSON verisi çekilemedi:", error);
                 alert("Verileri yüklerken hata oluştu.");
             }
+        }
+
+        function populateAssetDropdown(data) {
+            const assetDropdown = document.getElementById("asset");
+            assetDropdown.innerHTML = ""; // Önce temizle
+
+            Object.keys(data.assets).forEach(asset => {
+                let option = document.createElement("option");
+                option.value = asset;
+                option.textContent = asset;
+                assetDropdown.appendChild(option);
+            });
+
+            updateAssetDetails();
+        }
+
+        function updateAssetDetails() {
+            const asset = document.getElementById("asset").value;
+            const loggedInUser = localStorage.getItem("loggedInUser");
+            const jsonFile = loggedInUser === "YBA" 
+                ? "https://raw.githubusercontent.com/baryamhan/option-pricing/main/yba.json"
+                : "https://raw.githubusercontent.com/baryamhan/option-pricing/main/sube.json";
+
+            fetch(jsonFile)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("volatility").value = data.assets[asset].volatility;
+                    document.getElementById("dividend").value = data.assets[asset].dividend;
+                    document.getElementById("dividendDate").value = data.assets[asset].date;
+                })
+                .catch(error => console.error("Hata:", error));
+        }
+
+        function calculateDaysToExpiry() {
+            const expiryDate = new Date(document.getElementById("expiry").value);
+            const today = new Date();
+            const timeDiff = expiryDate - today;
+            const daysToExpiry = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+            document.getElementById("daysToExpiry").value = daysToExpiry;
+        }
+
+        function calculateOptionPrice() {
+            const spotPrice = parseFloat(document.getElementById("spotPrice").value);
+            const interestRate = parseFloat(document.getElementById("volatility").value) / 100; // Kullanıcı JSON'dan gelen faiz oranını kullanacak
+            const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
+            const strike = parseFloat(document.getElementById("strike").value);
+
+            if (isNaN(spotPrice) || isNaN(interestRate) || isNaN(daysToExpiry) || isNaN(strike)) {
+                alert("Lütfen tüm alanları doldurun.");
+                return;
+            }
+
+            // Basit hesaplama formülü: Fiyat * (Faiz * Vade Gün Sayısı / 365) - Strike
+            const optionPrice = (spotPrice * (interestRate * daysToExpiry / 365)) - strike;
+
+            document.getElementById("optionPrice").innerText = optionPrice.toFixed(2);
         }
 
         function logout() {
