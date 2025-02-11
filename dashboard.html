@@ -21,9 +21,6 @@
             <input type="number" id="spotPrice" value="100" readonly>
 
             <!-- JSON'dan Gelecek Değerler -->
-            <label for="volatility">Önerilen Volatilite (%):</label>
-            <input type="number" id="volatility" readonly>
-
             <label for="dividend">Temettü Değeri (%):</label>
             <input type="number" id="dividend" readonly>
 
@@ -44,7 +41,13 @@
             <!-- Hesaplanan Opsiyon Fiyatı -->
             <button type="button" onclick="calculateOptionPrice()">Hesapla</button>
 
-            <h3>Opsiyon Önerilen Fiyatı: <span id="optionPrice">-</span></h3>
+            <!-- Hesaplamadan sonra görünmesi gereken alanlar -->
+            <div id="calculatedFields" style="display: none;">
+                <label for="volatility">Önerilen Volatilite (%):</label>
+                <input type="number" id="volatility" readonly>
+
+                <h3>Opsiyon Önerilen Fiyatı: <span id="optionPrice">-</span></h3>
+            </div>
         </form>
 
         <button onclick="logout()">Çıkış Yap</button>
@@ -65,11 +68,9 @@
         });
 
         function loadDataForUser(user) {
-            // Kullanıcıya göre JSON dosyasını belirle
             const jsonFile = user === "YBA" 
-    ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
-    : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
-
+                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
+                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
 
             fetchData(jsonFile);
         }
@@ -79,7 +80,7 @@
                 console.log("JSON Yükleniyor:", jsonFile);
                 const response = await fetch(jsonFile);
 
-                // JSON yerine HTML (404 veya hata sayfası) dönüyorsa hata verelim
+                // Eğer JSON yerine HTML dönüyorsa hata verelim
                 const contentType = response.headers.get("content-type");
                 if (!contentType || !contentType.includes("application/json")) {
                     throw new Error("Beklenen JSON verisi yerine HTML alındı!");
@@ -90,7 +91,7 @@
                 }
 
                 const data = await response.json();
-                console.log("JSON Verisi:", data); // JSON içeriğini kontrol et
+                console.log("JSON Verisi:", data);
 
                 if (!Array.isArray(data)) {
                     throw new Error("JSON formatı dizi şeklinde olmalı.");
@@ -114,6 +115,7 @@
                 assetDropdown.appendChild(option);
             });
 
+            assetDropdown.addEventListener("change", () => updateAssetDetails(data));
             updateAssetDetails(data);
         }
 
@@ -122,13 +124,16 @@
             const selectedAsset = data.find(item => item["Asset"] === asset);
 
             if (selectedAsset) {
-                document.getElementById("volatility").value = selectedAsset["Volatility (%)"];
                 document.getElementById("dividend").value = selectedAsset["Dividend"];
 
                 // Excel tarihini YYYY-MM-DD formatına çevirme
                 const excelBaseDate = new Date(1899, 11, 30);
                 const properDate = new Date(excelBaseDate.getTime() + selectedAsset["Dividend Date"] * 86400000);
                 document.getElementById("dividendDate").value = properDate.toISOString().split('T')[0];
+
+                // Volatilite değerini boş bırak
+                document.getElementById("volatility").value = "";
+                document.getElementById("calculatedFields").style.display = "none";
             }
         }
 
@@ -142,20 +147,34 @@
         }
 
         function calculateOptionPrice() {
+            const asset = document.getElementById("asset").value;
             const spotPrice = parseFloat(document.getElementById("spotPrice").value);
-            const interestRate = parseFloat(document.getElementById("volatility").value) / 100; // Kullanıcı JSON'dan gelen faiz oranını kullanacak
             const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
             const strike = parseFloat(document.getElementById("strike").value);
 
-            if (isNaN(spotPrice) || isNaN(interestRate) || isNaN(daysToExpiry) || isNaN(strike)) {
+            if (isNaN(spotPrice) || isNaN(daysToExpiry) || isNaN(strike)) {
                 alert("Lütfen tüm alanları doldurun.");
                 return;
             }
 
-            // Basit hesaplama formülü: Fiyat * (Faiz * Vade Gün Sayısı / 365) - Strike
-            const optionPrice = (spotPrice * (interestRate * daysToExpiry / 365)) - strike;
+            const jsonFile = localStorage.getItem("loggedInUser") === "YBA" 
+                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
+                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
 
-            document.getElementById("optionPrice").innerText = optionPrice.toFixed(2);
+            fetch(jsonFile)
+                .then(response => response.json())
+                .then(data => {
+                    const selectedAsset = data.find(item => item["Asset"] === asset);
+                    const volatility = selectedAsset ? selectedAsset["Volatility (%)"] : 0;
+                    document.getElementById("volatility").value = volatility;
+
+                    const interestRate = volatility / 100;
+                    const optionPrice = (spotPrice * (interestRate * daysToExpiry / 365)) - strike;
+                    document.getElementById("optionPrice").innerText = optionPrice.toFixed(2);
+
+                    document.getElementById("calculatedFields").style.display = "block";
+                })
+                .catch(error => console.error("Hata:", error));
         }
 
         function logout() {
