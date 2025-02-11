@@ -16,7 +16,7 @@
             <label for="asset">Dayanak Varlık:</label>
             <select id="asset" onchange="updateAssetDetails()"></select>
 
-            <!-- Dayanak Fiyatı (Şimdilik 100, ileride API'den gelecek) -->
+            <!-- Dayanak Fiyatı -->
             <label for="spotPrice">Dayanak Fiyatı:</label>
             <input type="number" id="spotPrice" value="100" readonly>
 
@@ -26,6 +26,9 @@
 
             <label for="dividendDate">Temettü Tarihi:</label>
             <input type="date" id="dividendDate" readonly>
+
+            <label for="interestRate">Faiz Oranı (%):</label>
+            <input type="number" id="interestRate" readonly>
 
             <!-- Kullanıcının Gireceği Değerler -->
             <label for="strike">Kullanım Fiyatı (Strike):</label>
@@ -38,26 +41,36 @@
             <label for="daysToExpiry">Vadeye Kalan Gün:</label>
             <input type="number" id="daysToExpiry" readonly>
 
-            <!-- Hesaplanan Opsiyon Fiyatı -->
+            <!-- Call/Put Seçimi -->
+            <label>Opsiyon Türü:</label>
+            <div class="option-type">
+                <input type="radio" id="callOption" name="optionType" value="Call" checked>
+                <label for="callOption">Call</label>
+                
+                <input type="radio" id="putOption" name="optionType" value="Put">
+                <label for="putOption">Put</label>
+            </div>
+
+            <!-- Önerilen Volatilite -->
+            <label for="volatility">Önerilen Volatilite (%):</label>
+            <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek">
+
+            <!-- Hesapla Butonu -->
             <button type="button" onclick="calculateOptionPrice()">Hesapla</button>
 
-            <!-- Hesaplamadan sonra görünmesi gereken alanlar -->
-            <div id="calculatedFields" style="display: none;">
-                <label for="volatility">Önerilen Volatilite (%):</label>
-                <input type="number" id="volatility" readonly>
-
-                <h3>Opsiyon Önerilen Fiyatı: <span id="optionPrice">-</span></h3>
+            <!-- Hesaplanan Opsiyon Fiyatı -->
+            <div class="result-box">
+                <label>Opsiyon Önerilen Fiyatı:</label>
+                <input type="text" id="optionPrice" readonly class="bold-result">
             </div>
         </form>
 
-        <button onclick="logout()">Çıkış Yap</button>
+        <button class="logout" onclick="logout()">Çıkış Yap</button>
     </div>
 
     <script>
-        // Kullanıcının giriş yapıp yapmadığını kontrol et
         document.addEventListener("DOMContentLoaded", () => {
             const loggedInUser = localStorage.getItem("loggedInUser");
-
             if (!loggedInUser) {
                 alert("Lütfen önce giriş yapın!");
                 window.location.href = "index.html";
@@ -79,24 +92,7 @@
             try {
                 console.log("JSON Yükleniyor:", jsonFile);
                 const response = await fetch(jsonFile);
-
-                // Eğer JSON yerine HTML dönüyorsa hata verelim
-                const contentType = response.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new Error("Beklenen JSON verisi yerine HTML alındı!");
-                }
-
-                if (!response.ok) {
-                    throw new Error(`HTTP Hatası! Durum: ${response.status}`);
-                }
-
                 const data = await response.json();
-                console.log("JSON Verisi:", data);
-
-                if (!Array.isArray(data)) {
-                    throw new Error("JSON formatı dizi şeklinde olmalı.");
-                }
-
                 populateAssetDropdown(data);
             } catch (error) {
                 console.error("JSON verisi çekilemedi:", error);
@@ -106,7 +102,7 @@
 
         function populateAssetDropdown(data) {
             const assetDropdown = document.getElementById("asset");
-            assetDropdown.innerHTML = ""; // Önce temizle
+            assetDropdown.innerHTML = ""; 
 
             data.forEach(item => {
                 let option = document.createElement("option");
@@ -125,25 +121,13 @@
 
             if (selectedAsset) {
                 document.getElementById("dividend").value = selectedAsset["Dividend"];
+                document.getElementById("interestRate").value = selectedAsset["Interest Rate (%)"];
+                document.getElementById("volatility").value = "";
 
-                // Excel tarihini YYYY-MM-DD formatına çevirme
                 const excelBaseDate = new Date(1899, 11, 30);
                 const properDate = new Date(excelBaseDate.getTime() + selectedAsset["Dividend Date"] * 86400000);
                 document.getElementById("dividendDate").value = properDate.toISOString().split('T')[0];
-
-                // Volatilite değerini boş bırak
-                document.getElementById("volatility").value = "";
-                document.getElementById("calculatedFields").style.display = "none";
             }
-        }
-
-        function calculateDaysToExpiry() {
-            const expiryDate = new Date(document.getElementById("expiry").value);
-            const today = new Date();
-            const timeDiff = expiryDate - today;
-            const daysToExpiry = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-            document.getElementById("daysToExpiry").value = daysToExpiry;
         }
 
         function calculateOptionPrice() {
@@ -151,28 +135,28 @@
             const spotPrice = parseFloat(document.getElementById("spotPrice").value);
             const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
             const strike = parseFloat(document.getElementById("strike").value);
+            const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
+            const optionType = document.querySelector('input[name="optionType"]:checked').value;
 
-            if (isNaN(spotPrice) || isNaN(daysToExpiry) || isNaN(strike)) {
+            if (isNaN(spotPrice) || isNaN(daysToExpiry) || isNaN(strike) || isNaN(interestRate)) {
                 alert("Lütfen tüm alanları doldurun.");
                 return;
             }
 
-            const jsonFile = localStorage.getItem("loggedInUser") === "YBA" 
-                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
-                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
-
-            fetch(jsonFile)
+            fetch("https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json")
                 .then(response => response.json())
                 .then(data => {
                     const selectedAsset = data.find(item => item["Asset"] === asset);
                     const volatility = selectedAsset ? selectedAsset["Volatility (%)"] : 0;
                     document.getElementById("volatility").value = volatility;
 
-                    const interestRate = volatility / 100;
-                    const optionPrice = (spotPrice * (interestRate * daysToExpiry / 365)) - strike;
-                    document.getElementById("optionPrice").innerText = optionPrice.toFixed(2);
+                    let optionPrice = (spotPrice * (interestRate * daysToExpiry / 365)) - strike;
 
-                    document.getElementById("calculatedFields").style.display = "block";
+                    if (optionType === "Put") {
+                        optionPrice = optionPrice * -1;
+                    }
+
+                    document.getElementById("optionPrice").value = optionPrice.toFixed(2);
                 })
                 .catch(error => console.error("Hata:", error));
         }
