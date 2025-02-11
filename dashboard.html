@@ -86,7 +86,7 @@
             console.log("JSON Verisi:", data); // JSON içeriğini kontrol edelim
 
             if (!Array.isArray(data)) {
-                throw new Error("JSON formatı dizi şeklinde olmalı, fakat obje olarak geldi.");
+                throw new Error("JSON formatı bir dizi (array) olmalı.");
             }
 
             populateAssetDropdown(data);
@@ -117,77 +117,45 @@
         if (selectedAsset) {
             document.getElementById("volatility").value = selectedAsset["Volatility (%)"];
             document.getElementById("dividend").value = selectedAsset["Dividend"];
-            
+
             // Excel tarihini YYYY-MM-DD formatına çevirme
             const excelBaseDate = new Date(1899, 11, 30);
             const properDate = new Date(excelBaseDate.getTime() + selectedAsset["Dividend Date"] * 86400000);
             document.getElementById("dividendDate").value = properDate.toISOString().split('T')[0];
         }
     }
+
+    function calculateDaysToExpiry() {
+        const expiryDate = new Date(document.getElementById("expiry").value);
+        const today = new Date();
+        const timeDiff = expiryDate - today;
+        const daysToExpiry = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+        document.getElementById("daysToExpiry").value = daysToExpiry;
+    }
+
+    function calculateOptionPrice() {
+        const spotPrice = parseFloat(document.getElementById("spotPrice").value);
+        const interestRate = parseFloat(document.getElementById("volatility").value) / 100; // Kullanıcı JSON'dan gelen faiz oranını kullanacak
+        const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
+        const strike = parseFloat(document.getElementById("strike").value);
+
+        if (isNaN(spotPrice) || isNaN(interestRate) || isNaN(daysToExpiry) || isNaN(strike)) {
+            alert("Lütfen tüm alanları doldurun.");
+            return;
+        }
+
+        // Basit hesaplama formülü: Fiyat * (Faiz * Vade Gün Sayısı / 365) - Strike
+        const optionPrice = (spotPrice * (interestRate * daysToExpiry / 365)) - strike;
+
+        document.getElementById("optionPrice").innerText = optionPrice.toFixed(2);
+    }
+
+    function logout() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "index.html";
+    }
 </script>
-
-        function populateAssetDropdown(data) {
-            const assetDropdown = document.getElementById("asset");
-            assetDropdown.innerHTML = ""; // Önce temizle
-
-            Object.keys(data.assets).forEach(asset => {
-                let option = document.createElement("option");
-                option.value = asset;
-                option.textContent = asset;
-                assetDropdown.appendChild(option);
-            });
-
-            updateAssetDetails();
-        }
-
-        function updateAssetDetails() {
-            const asset = document.getElementById("asset").value;
-            const loggedInUser = localStorage.getItem("loggedInUser");
-            const jsonFile = loggedInUser === "YBA" 
-                ? "https://raw.githubusercontent.com/baryamhan/option-pricing/main/yba.json"
-                : "https://raw.githubusercontent.com/baryamhan/option-pricing/main/sube.json";
-
-            fetch(jsonFile)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("volatility").value = data.assets[asset].volatility;
-                    document.getElementById("dividend").value = data.assets[asset].dividend;
-                    document.getElementById("dividendDate").value = data.assets[asset].date;
-                })
-                .catch(error => console.error("Hata:", error));
-        }
-
-        function calculateDaysToExpiry() {
-            const expiryDate = new Date(document.getElementById("expiry").value);
-            const today = new Date();
-            const timeDiff = expiryDate - today;
-            const daysToExpiry = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-            document.getElementById("daysToExpiry").value = daysToExpiry;
-        }
-
-        function calculateOptionPrice() {
-            const spotPrice = parseFloat(document.getElementById("spotPrice").value);
-            const interestRate = parseFloat(document.getElementById("volatility").value) / 100; // Kullanıcı JSON'dan gelen faiz oranını kullanacak
-            const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
-            const strike = parseFloat(document.getElementById("strike").value);
-
-            if (isNaN(spotPrice) || isNaN(interestRate) || isNaN(daysToExpiry) || isNaN(strike)) {
-                alert("Lütfen tüm alanları doldurun.");
-                return;
-            }
-
-            // Basit hesaplama formülü: Fiyat * (Faiz * Vade Gün Sayısı / 365) - Strike
-            const optionPrice = (spotPrice * (interestRate * daysToExpiry / 365)) - strike;
-
-            document.getElementById("optionPrice").innerText = optionPrice.toFixed(2);
-        }
-
-        function logout() {
-            localStorage.removeItem("loggedInUser");
-            window.location.href = "index.html";
-        }
-    </script>
 
 </body>
 </html>
