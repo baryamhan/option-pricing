@@ -12,28 +12,26 @@
         <h2>Hoş Geldiniz, <span id="username"></span></h2>
 
         <form id="optionForm">
-            <!-- Dayanak Varlık Seçimi -->
+            <!-- 1. Dayanak Varlık Seçimi -->
             <label for="asset">Dayanak Varlık:</label>
             <select id="asset" onchange="updateAssetDetails()"></select>
 
-            <!-- Dayanak Fiyatı -->
+            <!-- 2. Dayanak Fiyatı -->
             <label for="spotPrice">Dayanak Fiyatı:</label>
             <input type="number" id="spotPrice" value="100" readonly>
 
-            <!-- JSON'dan Gelecek Değerler -->
-            <label for="dividend">Temettü Değeri (%):</label>
-            <input type="number" id="dividend" readonly>
+            <!-- 3. Call/Put Seçimi -->
+            <label for="optionType">Opsiyon Türü:</label>
+            <select id="optionType">
+                <option value="Call" selected>Call</option>
+                <option value="Put">Put</option>
+            </select>
 
-            <label for="dividendDate">Temettü Tarihi:</label>
-            <input type="date" id="dividendDate" readonly>
-
-            <label for="interestRate">Faiz Oranı (%):</label>
-            <input type="number" id="interestRate" readonly>
-
-            <!-- Kullanıcının Gireceği Değerler -->
+            <!-- 4. Kullanım Fiyatı (Strike) -->
             <label for="strike">Kullanım Fiyatı (Strike):</label>
             <input type="number" id="strike">
 
+            <!-- 5. Vade Sonu Tarihi -->
             <label for="expiry">Vade Sonu Tarihi:</label>
             <input type="date" id="expiry" onchange="calculateDaysToExpiry()">
 
@@ -41,17 +39,15 @@
             <label for="daysToExpiry">Vadeye Kalan Gün:</label>
             <input type="number" id="daysToExpiry" readonly>
 
-            <!-- Call/Put Seçimi -->
-            <label>Opsiyon Türü:</label>
-            <div class="option-type">
-                <input type="radio" id="callOption" name="optionType" value="Call" checked>
-                <label for="callOption">Call</label>
-                
-                <input type="radio" id="putOption" name="optionType" value="Put">
-                <label for="putOption">Put</label>
-            </div>
+            <!-- 6. Temettü Değeri -->
+            <label for="dividend">Temettü Değeri (%):</label>
+            <input type="number" id="dividend" readonly>
 
-            <!-- Önerilen Volatilite -->
+            <!-- 7. Temettü Tarihi -->
+            <label for="dividendDate">Temettü Tarihi:</label>
+            <input type="date" id="dividendDate" readonly>
+
+            <!-- 8. Önerilen Volatilite -->
             <label for="volatility">Önerilen Volatilite (%):</label>
             <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek">
 
