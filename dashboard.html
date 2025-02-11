@@ -153,13 +153,46 @@
     }
 
     document.getElementById("expiry").addEventListener("change", calculateDaysToExpiry);
-
+	    
+function normalCDF(x) {
+    // Standart normal dağılım fonksiyonu (N(x))
+    return (1.0 + Math.erf(x / Math.sqrt(2.0))) / 2.0;
+}
+	    
 function calculateOptionPrice() {
     const asset = document.getElementById("asset").value;
     const spotPrice = parseFloat(document.getElementById("spotPrice").value);
     const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
     const strike = parseFloat(document.getElementById("strike").value);
     const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
+    const volatility = parseFloat(document.getElementById("volatility").value) / 100;
+    const dividend = parseFloat(document.getElementById("dividend").value);
+    const optionType = document.getElementById("optionType").value;
+    // Vadeye kalan süre yıl cinsinden
+    const T = daysToExpiry / 365;
+
+    // ✅ Temettü verimi q = Temettü / Spot Fiyatı
+    const dividendYield = dividend / spotPrice;
+
+    // ✅ Temettü düzeltilmiş spot fiyat
+    const adjustedSpotPrice = spotPrice * Math.exp(-dividendYield * T);
+	   
+    // ✅ Black-Scholes d1 ve d2 hesaplamaları
+    const d1 = (Math.log(adjustedSpotPrice / strike) + (interestRate + (volatility ** 2) / 2) * T) / (volatility * Math.sqrt(T));
+    const d2 = d1 - volatility * Math.sqrt(T);
+
+    let optionPrice;
+
+    if (optionType === "Call") {
+        optionPrice = (adjustedSpotPrice * normalCDF(d1)) - (strike * Math.exp(-interestRate * T) * normalCDF(d2));
+    } else if (optionType === "Put") {
+        optionPrice = (strike * Math.exp(-interestRate * T) * normalCDF(-d2)) - (adjustedSpotPrice * normalCDF(-d1));
+    } else {
+        alert("Hata: Geçersiz opsiyon türü!");
+        return;
+    }
+	
+    document.getElementById("optionPrice").value = optionPrice.toFixed(2);
 
     // ✅ Call/Put seçimini `select` kutusundan alıyoruz
     const optionTypeElement = document.getElementById("optionType");
