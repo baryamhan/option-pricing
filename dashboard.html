@@ -12,43 +12,46 @@
         <h2>Hoş Geldiniz, <span id="username"></span></h2>
 
         <form id="optionForm">
-            <!-- Dayanak Varlık Seçimi -->
-            <label for="asset">Dayanak Varlık Seçimi:</label>
+            <!-- 1. Dayanak Varlık Seçimi -->
+            <label for="asset">Dayanak Varlık:</label>
             <select id="asset" onchange="updateAssetDetails()"></select>
 
-            <!-- Dayanak Fiyatı -->
-            <label for="spotPrice">Dayanak Varlık Fiyatı:</label>
+            <!-- 2. Dayanak Fiyatı -->
+            <label for="spotPrice">Dayanak Fiyatı:</label>
             <input type="number" id="spotPrice" value="100" readonly>
 
-            <!-- Call/Put Seçimi -->
+            <!-- 3. Call/Put Seçimi -->
             <label for="optionType">Opsiyon Türü:</label>
             <select id="optionType">
                 <option value="Call" selected>Call</option>
                 <option value="Put">Put</option>
             </select>
 
-            <!-- Kullanıcının Gireceği Değerler -->
-            <label for="strike">Kullanım Fiyatı:</label>
+            <!-- 4. Kullanım Fiyatı (Strike) -->
+            <label for="strike">Kullanım Fiyatı (Strike):</label>
             <input type="number" id="strike">
 
+            <!-- 5. Vade Sonu Tarihi -->
             <label for="expiry">Vade Sonu Tarihi:</label>
             <input type="date" id="expiry" onchange="calculateDaysToExpiry()">
 
-            <!-- Vadeye Kalan Gün Sayısı -->
+            <!-- 6. Vadeye Kalan Gün -->
             <label for="daysToExpiry">Vadeye Kalan Gün:</label>
             <input type="number" id="daysToExpiry" readonly>
 
-            <!-- JSON'dan Gelecek Değerler -->
-            <label for="dividend">Temettü (Hisse Başına):</label>
+            <!-- 7. Temettü Değeri -->
+            <label for="dividend">Temettü Değeri (%):</label>
             <input type="number" id="dividend" readonly>
 
+            <!-- 8. Temettü Tarihi -->
             <label for="dividendDate">Temettü Tarihi:</label>
             <input type="date" id="dividendDate" readonly>
 
+            <!-- 9. Faiz Oranı -->
             <label for="interestRate">Faiz Oranı (%):</label>
             <input type="number" id="interestRate" readonly>
 
-            <!-- Önerilen Volatilite -->
+            <!-- 10. Önerilen Volatilite -->
             <label for="volatility">Önerilen Volatilite (%):</label>
             <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek">
 
@@ -57,7 +60,7 @@
 
             <!-- Hesaplanan Opsiyon Fiyatı -->
             <div class="result-box">
-                <label>Önerilen Opsiyon Fiyatı:</label>
+                <label>Opsiyon Önerilen Fiyatı:</label>
                 <input type="text" id="optionPrice" readonly class="bold-result">
             </div>
         </form>
@@ -87,7 +90,6 @@
 
         async function fetchData(jsonFile) {
             try {
-                console.log("JSON Yükleniyor:", jsonFile);
                 const response = await fetch(jsonFile);
                 const data = await response.json();
                 populateAssetDropdown(data);
@@ -127,122 +129,37 @@
             }
         }
 
-	function calculateDaysToExpiry() {
-        const expiryInput = document.getElementById("expiry").value;
-
-        if (!expiryInput) {
-            document.getElementById("daysToExpiry").value = "";
-            return;
+        function normalCDF(x) {
+            return (1.0 + Math.erf(x / Math.sqrt(2.0))) / 2.0;
         }
 
-        const expiryDate = new Date(expiryInput);
-        const today = new Date();
+        function calculateOptionPrice() {
+            const asset = document.getElementById("asset").value;
+            const spotPrice = parseFloat(document.getElementById("spotPrice").value);
+            const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
+            const strike = parseFloat(document.getElementById("strike").value);
+            const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
+            const volatility = parseFloat(document.getElementById("volatility").value) / 100;
+            const dividend = parseFloat(document.getElementById("dividend").value);
+            const optionType = document.getElementById("optionType").value;
 
-        // Sadece tarih kısmını al (saat farkları sorun yaratmasın)
-        const timeDiff = expiryDate.setHours(0, 0, 0, 0) - today.setHours(0, 0, 0, 0);
-        const daysToExpiry = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-        if (daysToExpiry < 0) {
-            alert("Seçilen vade tarihi geçmiş olamaz!");
-            document.getElementById("expiry").value = "";
-            document.getElementById("daysToExpiry").value = "";
-            return;
-        }
-
-        document.getElementById("daysToExpiry").value = daysToExpiry;
-    }
-
-    document.getElementById("expiry").addEventListener("change", calculateDaysToExpiry);
-	    
-function normalCDF(x) {
-    // Standart normal dağılım fonksiyonu (N(x))
-    return (1.0 + Math.erf(x / Math.sqrt(2.0))) / 2.0;
-}
-	    
-function calculateOptionPrice() {
-    const asset = document.getElementById("asset").value;
-    const spotPrice = parseFloat(document.getElementById("spotPrice").value);
-    const daysToExpiry = parseInt(document.getElementById("daysToExpiry").value);
-    const strike = parseFloat(document.getElementById("strike").value);
-    const interestRate = parseFloat(document.getElementById("interestRate").value) / 100;
-    const volatility = parseFloat(document.getElementById("volatility").value) / 100;
-    const dividend = parseFloat(document.getElementById("dividend").value);
-    const optionType = document.getElementById("optionType").value;
-    // Vadeye kalan süre yıl cinsinden
-    const T = daysToExpiry / 365;
-
-    // ✅ Temettü verimi q = Temettü / Spot Fiyatı
-    const dividendYield = dividend / spotPrice;
-
-    // ✅ Temettü düzeltilmiş spot fiyat
-    const adjustedSpotPrice = spotPrice * Math.exp(-dividendYield * T);
-	   
-    // ✅ Black-Scholes d1 ve d2 hesaplamaları
-    const d1 = (Math.log(adjustedSpotPrice / strike) + (interestRate + (volatility ** 2) / 2) * T) / (volatility * Math.sqrt(T));
-    const d2 = d1 - volatility * Math.sqrt(T);
-
-    let optionPrice;
-
-    if (optionType === "Call") {
-        optionPrice = (adjustedSpotPrice * normalCDF(d1)) - (strike * Math.exp(-interestRate * T) * normalCDF(d2));
-    } else if (optionType === "Put") {
-        optionPrice = (strike * Math.exp(-interestRate * T) * normalCDF(-d2)) - (adjustedSpotPrice * normalCDF(-d1));
-    } else {
-        alert("Hata: Geçersiz opsiyon türü!");
-        return;
-    }
-	
-    document.getElementById("optionPrice").value = optionPrice.toFixed(2);
-
-    // ✅ Call/Put seçimini `select` kutusundan alıyoruz
-    const optionTypeElement = document.getElementById("optionType");
-    if (!optionTypeElement) {
-        alert("Hata: Call/Put seçimi için 'optionType' bulunamadı!");
-        return;
-    }
-    const optionType = optionTypeElement.value;
-
-    if (isNaN(spotPrice) || isNaN(daysToExpiry) || isNaN(strike) || isNaN(interestRate)) {
-        alert("Lütfen tüm alanları eksiksiz doldurun.");
-        return;
-    }
-
-    // ✅ Kullanıcı giriş bilgisine göre doğru JSON dosyasını seçiyoruz
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    const jsonFile = loggedInUser === "YBA"
-        ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
-        : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
-
-    fetch(jsonFile)
-        .then(response => response.json())
-        .then(data => {
-            const selectedAsset = data.find(item => item["Asset"] === asset);
-
-            if (!selectedAsset) {
-                alert("Hata: Seçili dayanak varlık JSON'da bulunamadı!");
+            if (isNaN(spotPrice) || isNaN(daysToExpiry) || isNaN(strike) || isNaN(interestRate) || isNaN(volatility) || isNaN(dividend)) {
+                alert("Lütfen tüm alanları eksiksiz doldurun.");
                 return;
             }
 
-            const volatility = selectedAsset["Volatility (%)"] || 0;
-            document.getElementById("volatility").value = volatility;
+            const T = daysToExpiry / 365;
+            const dividendYield = dividend / spotPrice;
+            const adjustedSpotPrice = spotPrice * Math.exp(-dividendYield * T);
 
-            let optionPrice = (spotPrice * (1 + (interestRate * daysToExpiry / 365))) - strike;
+            const d1 = (Math.log(adjustedSpotPrice / strike) + (interestRate + (volatility ** 2) / 2) * T) / (volatility * Math.sqrt(T));
+            const d2 = d1 - volatility * Math.sqrt(T);
 
-            if (optionType === "Put") {
-                optionPrice = optionPrice * -1;
-            }
+            let optionPrice = optionType === "Call"
+                ? (adjustedSpotPrice * normalCDF(d1)) - (strike * Math.exp(-interestRate * T) * normalCDF(d2))
+                : (strike * Math.exp(-interestRate * T) * normalCDF(-d2)) - (adjustedSpotPrice * normalCDF(-d1));
 
             document.getElementById("optionPrice").value = optionPrice.toFixed(2);
-        })
-        .catch(error => {
-            console.error("Hata:", error);
-            alert("Veriler yüklenirken hata oluştu.");
-        });
-}
-
-        function logout() {
-            localStorage.removeItem("loggedInUser");
-            window.location.href = "index.html";
         }
     </script>
 
