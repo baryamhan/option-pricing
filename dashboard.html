@@ -13,15 +13,22 @@
 
         <form id="optionForm">
             <!-- Dayanak Varlık Seçimi -->
-            <label for="asset">Dayanak Varlık:</label>
+            <label for="asset">Dayanak Varlık Seçimi:</label>
             <select id="asset" onchange="updateAssetDetails()"></select>
 
             <!-- Dayanak Fiyatı -->
-            <label for="spotPrice">Dayanak Fiyatı:</label>
+            <label for="spotPrice">Dayanak Varlık Fiyatı:</label>
             <input type="number" id="spotPrice" value="100" readonly>
 
+            <!-- Call/Put Seçimi -->
+            <label for="optionType">Opsiyon Türü:</label>
+            <select id="optionType">
+                <option value="Call" selected>Call</option>
+                <option value="Put">Put</option>
+            </select>
+
             <!-- Kullanıcının Gireceği Değerler -->
-            <label for="strike">Kullanım Fiyatı (Strike):</label>
+            <label for="strike">Kullanım Fiyatı:</label>
             <input type="number" id="strike">
 
             <label for="expiry">Vade Sonu Tarihi:</label>
@@ -30,13 +37,6 @@
             <!-- Vadeye Kalan Gün Sayısı -->
             <label for="daysToExpiry">Vadeye Kalan Gün:</label>
             <input type="number" id="daysToExpiry" readonly>
-
-            <!-- Call/Put Seçimi -->
-            <label for="optionType">Opsiyon Türü:</label>
-            <select id="optionType">
-                <option value="Call" selected>Call</option>
-                <option value="Put">Put</option>
-            </select>
 
             <!-- JSON'dan Gelecek Değerler -->
             <label for="dividend">Temettü (Hisse Başına):</label>
@@ -174,7 +174,7 @@
                     const volatility = selectedAsset ? selectedAsset["Volatility (%)"] : 0;
                     document.getElementById("volatility").value = volatility;
 
-                    let optionPrice = (spotPrice * (interestRate * daysToExpiry / 365)) - strike;
+                    let optionPrice = (spotPrice * ( 1 + (interestRate * daysToExpiry / 365)) ) - strike;
 
                     if (optionType === "Put") {
                         optionPrice = optionPrice * -1;
