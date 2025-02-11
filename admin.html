@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Paneli - Volatilite ve Temettü Güncelleme</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
             <tr>
                 <th>Dayanak Varlık</th>
                 <th>Volatilite (%)</th>
-                <th>Temettü (%)</th>
+                <th>Temettü Değeri</th>
                 <th>Temettü Tarihi</th>
             </tr>
         </thead>
@@ -44,14 +44,14 @@
 
         // Varsayılan veriler (Eğer yoksa localStorage'dan al)
         const optionData = JSON.parse(localStorage.getItem("optionData")) || {
-            interest_rate: 5.0,
+            interest_rate: 50.0,
             assets: {}
         };
 
         // Varsayılan değerleri ayarla
         underlyingAssets.forEach(asset => {
             if (!optionData.assets[asset]) {
-                optionData.assets[asset] = { volatility: 0.20, dividend: 0.0, date: "" };
+                optionData.assets[asset] = { volatility: 20, dividend: 0.0, date: "" };
             }
         });
 
@@ -73,13 +73,13 @@
                 const volCell = document.createElement("td");
                 const volInput = document.createElement("input");
                 volInput.type = "number";
-                volInput.step = "0.01";
+                volInput.step = "1.00";
                 volInput.value = optionData.assets[asset].volatility;
                 volInput.id = `volatility_${asset}`;
                 volCell.appendChild(volInput);
                 row.appendChild(volCell);
 
-                // Temettü (%)
+                // Temettü Değeri
                 const divCell = document.createElement("td");
                 const divInput = document.createElement("input");
                 divInput.type = "number";
