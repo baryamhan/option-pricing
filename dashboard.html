@@ -67,8 +67,9 @@
         function loadDataForUser(user) {
             // Kullanıcıya göre JSON dosyasını belirle
             const jsonFile = user === "YBA" 
-                ? "https://raw.githubusercontent.com/baryamhan/option-pricing/main/yba.json"
-                : "https://raw.githubusercontent.com/baryamhan/option-pricing/main/sube.json";
+    ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
+    : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
+
 
             fetchData(jsonFile);
         }
