@@ -213,7 +213,8 @@ function calculateOptionPrice() {
             const dividend = selectedAsset["Dividend"];
             const dividendDate = new Date(document.getElementById("dividendDate").value);
             const expiryDate = new Date(document.getElementById("expiry").value);
-            
+            const today = new Date();
+		
             document.getElementById("volatility").value = (volatility * 100).toFixed(2);
 
             // ✅ Eğer temettü tarihi geçmişteyse veya vade sonu tarihinden büyükse temettü verimi = 0
