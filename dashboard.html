@@ -209,7 +209,9 @@ function calculateOptionPrice() {
                 return;
             }
 
-            const volatility = selectedAsset["Volatility (%)"] / 100;
+            // ✅ 1. ATMVol'ü JSON'dan al
+            const atmVol = selectedAsset["Volatility (%)"] / 100;
+		
             const dividend = selectedAsset["Dividend"];
             const dividendDate = new Date(document.getElementById("dividendDate").value);
             const expiryDate = new Date(document.getElementById("expiry").value);
@@ -222,7 +224,26 @@ function calculateOptionPrice() {
             if (dividendDate > today && dividendDate <= expiryDate) {
                 dividendYield = dividend / spotPrice;
             }
+            // ✅ 2. Slope sabit değer olarak -0.05
+            const slope = -0.05;
 
+            // ✅ 3. Forward fiyatını Euler yöntemiyle hesapla
+            const fwd = spotPrice * Math.exp(interestRate * (daysToExpiry / 365));
+            
+	    // ✅ 4. ln(Strike / Fwd) hesapla
+            let logStrikeFwd = Math.log(strike / fwd);
+
+            // ✅ 5. X değerini bul
+            let X = (fwd > strike) 
+                ? Math.max(logStrikeFwd, -0.5) 
+                : Math.min(logStrikeFwd, 0.5);
+
+            // ✅ 6. Adjusted Volatility hesapla
+            const adjustedVolatility = atmVol + (slope * X) + Math.pow(X, 2);
+
+	    // ✅ 7. Güncellenmiş volatiliteyi input'a yaz
+            document.getElementById("volatility").value = (adjustedVolatility * 100).toFixed(2);
+		
             // ✅ Vadeye kalan süre yıl cinsinden
             const T = daysToExpiry / 365;
 
@@ -230,8 +251,8 @@ function calculateOptionPrice() {
             const adjustedSpotPrice = spotPrice * Math.exp(-dividendYield * T);
 
             // ✅ Black-Scholes d1 ve d2 hesaplamaları
-            const d1 = (Math.log(adjustedSpotPrice / strike) + (interestRate + (volatility ** 2) / 2) * T) / (volatility * Math.sqrt(T));
-            const d2 = d1 - volatility * Math.sqrt(T);
+            const d1 = (Math.log(adjustedSpotPrice / strike) + (interestRate + (adjustedVolatility ** 2) / 2) * T) / (adjustedVolatility * Math.sqrt(T));
+            const d2 = d1 - adjustedVolatility * Math.sqrt(T);
 
             let optionPrice;
 
