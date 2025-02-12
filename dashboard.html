@@ -228,7 +228,7 @@ function calculateOptionPrice() {
             const slope = -0.05;
 
             // ✅ 3. Forward fiyatını Euler yöntemiyle hesapla
-            const fwd = spotPrice * Math.exp(interestRate * (daysToExpiry / 365));
+            const fwd = spotPrice * Math.exp((interestRate - dividendYield) * (daysToExpiry / 365));
             
 	    // ✅ 4. ln(Strike / Fwd) hesapla
             let logStrikeFwd = Math.log(strike / fwd);
