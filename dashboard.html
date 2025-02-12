@@ -216,10 +216,10 @@ function calculateOptionPrice() {
             
             document.getElementById("volatility").value = (volatility * 100).toFixed(2);
 
-            // ✅ Eğer temettü tarihi vade sonu tarihinden sonraysa temettü verimi = 0
-            let dividendYield = dividend / spotPrice;
-            if (dividendDate > expiryDate) {
-                dividendYield = 0;
+            // ✅ Eğer temettü tarihi geçmişteyse veya vade sonu tarihinden büyükse temettü verimi = 0
+            let dividendYield = 0;
+            if (dividendDate > today && dividendDate <= expiryDate) {
+                dividendYield = dividend / spotPrice;
             }
 
             // ✅ Vadeye kalan süre yıl cinsinden
