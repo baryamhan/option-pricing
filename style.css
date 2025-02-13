@@ -69,7 +69,8 @@ body {
     flex-direction: column;
     align-items: center;
     width: 600px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 /* === Label Stili === */
@@ -82,8 +83,8 @@ body {
 
 /* === Tüm Input ve Select Alanları === */
 input, select {
-    width: 600px; /* Sabit genişlik */
-    height: 35px;
+    width: 300px; /* Sabit genişlik */
+    height: 40px;
     font-size: 16px;
     text-align: center;
     border: 1px solid #a61c1c;
@@ -96,22 +97,22 @@ input, select {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 600px;
+    width: 300px;
 }
 
 /* Dayanak fiyatı giriş kutusu */
 #spotPrice {
-    width: 500px; /* Büyük kutu */
+    width: 300px; /* Büyük kutu */
 }
 
 /* Checkbox ve Elle Gir metni */
 #manualSpot {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
 }
 
 .checkbox-label {
-    font-size: 16px;
+    font-size: 12px;
     margin-left: 5px;
 }
 
@@ -120,14 +121,15 @@ button {
     background-color: #a61c1c;
     color: white;
     border: none;
-    width: 600px;
+    width: 300px;
     height: 40px;
     font-size: 18px;
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
-    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 button:hover {
@@ -143,7 +145,7 @@ button:hover {
     border: 1px solid #a61c1c;
     border-radius: 5px;
     padding: 5px;
-    width: 600px;
+    width: 300px;
     height: 40px;
     text-align: center;
 }
@@ -151,12 +153,12 @@ button:hover {
 /* === Responsive Düzen (Mobil İçin) === */
 @media (max-width: 768px) {
     input, select, button {
-        width: 90%; /* Küçük ekranlarda biraz küçült */
+        width: 100%; /* Küçük ekranlarda biraz küçült */
     }
 }
 
 @media (min-width: 1200px) {
     input, select, button {
-        width: 600px; /* Büyük ekranlarda sabit tut */
+        width: 300px; /* Büyük ekranlarda sabit tut */
     }
 }
