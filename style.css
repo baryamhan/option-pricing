@@ -55,7 +55,7 @@ body {
     background-color: #800000;
 }
 
-/* === Genel Input ve Label Grupları (600px Genişlikte) === */
+/* === Genel Input ve Label Grupları (300px Genişlikte) === */
 .input-group {
     display: flex;
     flex-direction: column;
@@ -73,10 +73,10 @@ body {
     font-size: 16px;
 }
 
-/* === Tüm Input ve Select Alanları (600px Genişlikte) === */
+/* === Tüm Input ve Select Alanları (300px Genişlikte) === */
 input, select {
-    width: 600px;
-    height: 35px;
+    width: 300px;
+    height: 40px;
     font-size: 16px;
     text-align: center;
     border: 1px solid #a61c1c;
@@ -110,7 +110,7 @@ button {
     background-color: #a61c1c;
     color: white;
     border: none;
-    width: 600px;
+    width: 300px;
     height: 40px;
     font-size: 18px;
     font-weight: bold;
@@ -132,7 +132,7 @@ button:hover {
     border: 1px solid #a61c1c;
     border-radius: 5px;
     padding: 5px;
-    width: 600px;
+    width: 300px;
     height: 40px;
     text-align: center;
 }
