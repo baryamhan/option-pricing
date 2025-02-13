@@ -13,52 +13,70 @@
 
         <form id="optionForm">
             <!-- Dayanak Varlık Seçimi -->
+    <div class="input-group">
             <label for="asset">Dayanak Varlık Seçimi:</label>
             <select id="asset" onchange="updateAssetDetails()"></select>
+    </div>
 
             <!-- Dayanak Varlık Fiyatı --> 
 	    <div style="display: flex; align-items: center;">
 	        <label for="spotPrice">Dayanak Varlık Fiyatı:</label>
 	        <input type="number" id="spotPrice" value="100" readonly style="margin-left: 10px; width: 300px;">
-
 	        <input type="checkbox" id="manualSpot" onchange="toggleManualSpot()" style="margin-left: 10px;">
 	        <label for="manualSpot" style="margin-left: 5px;">Elle Gir</label>
 	    </div>
 
 
             <!-- Call/Put Seçimi -->
+    <div class="input-group">
             <label for="optionType">Opsiyon Türü:</label>
             <select id="optionType">
                 <option value="Call" selected>Call</option>
                 <option value="Put">Put</option>
             </select>
+    </div>
 
             <!-- Kullanıcının Gireceği Değerler -->
+    <div class="input-group">
             <label for="strike">Kullanım Fiyatı:</label>
             <input type="number" id="strike">
+    </div>
 
+    <div class="input-group">
             <label for="expiry">Vade Sonu Tarihi:</label>
             <input type="date" id="expiry" onchange="calculateDaysToExpiry()">
+    </div>
 
             <!-- Vadeye Kalan Gün Sayısı -->
+    <div class="input-group">
             <label for="daysToExpiry">Vadeye Kalan Gün:</label>
             <input type="number" id="daysToExpiry" readonly>
+    </div>
 
             <!-- JSON'dan Gelecek Değerler -->
+    <div class="input-group">
             <label for="dividend">Temettü (Hisse Başına):</label>
             <input type="number" id="dividend" readonly>
-
+    </div>
+	    
+    <div class="input-group">
             <label for="dividendDate">Temettü Tarihi:</label>
             <input type="date" id="dividendDate" readonly>
+    </div>
 
+    <div class="input-group">
             <label for="interestRate">Faiz Oranı (%):</label>
             <input type="number" id="interestRate" readonly>
+    </div>
 
             <!-- Önerilen Volatilite -->
+    <div class="input-group">
             <label for="volatility">Önerilen Volatilite (%):</label>
             <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek">
+    </div>
 
             <!-- Hesapla Butonu -->
+    <div class="input-group">
             <button type="button" onclick="calculateOptionPrice()">Hesapla</button>
 
             <!-- Hesaplanan Opsiyon Fiyatı -->
