@@ -244,16 +244,8 @@ function calculateOptionPrice() {
                 : Math.min(logStrikeFwd, 0.5);
 
             // ✅ 6. Adjusted Volatility hesapla Call/Put'a göre
-            let adjustedVolatility;
-
-	    if (optionType === "Call") {
-                adjustedVolatility = (atmVol + (slope * X) + (Math.pow(X, 2) * callcur));
-            } else if (optionType === "Put") {
-                adjustedVolatility = (atmVol + (slope * X) + (Math.pow(X, 2) * putcur));
-            } else {
-                alert("Hata: Geçersiz opsiyon türü!");
-                return;
-            }	
+	    const curvature = (optionType === "Call") ? callcur : putcur;
+            let adjustedVolatility = (atmVol + (slope * X) + (Math.pow(X, 2) * curvature));
 		
 	    // ✅ 7. Güncellenmiş volatiliteyi input'a yaz
             document.getElementById("volatility").value = (adjustedVolatility * 100).toFixed(2);
