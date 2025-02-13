@@ -39,7 +39,7 @@ input, select {
 /* === Dayanak Varlık Seçimi ve Elle Gir Kutusu === */
 .input-container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
     width: 600px;
     margin-bottom: 10px;
