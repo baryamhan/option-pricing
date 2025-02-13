@@ -229,8 +229,8 @@ function calculateOptionPrice() {
             const slope = -0.05;
 
 	    // ✅ 2. Curvature'ları tanımla
-	    const callcur = selectedAsset["Call Curvature"]
-	    const putcur = selectedAsset["Put Curvature"]
+	    let callcur = selectedAsset["Call Curvature"]
+	    let putcur = selectedAsset["Put Curvature"]
 		
             // ✅ 3. Forward fiyatını Euler yöntemiyle hesapla
             const fwd = spotPrice * Math.exp((interestRate - dividendYield) * (daysToExpiry / 365));
