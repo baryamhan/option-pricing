@@ -8,10 +8,57 @@ body {
     padding: 20px;
 }
 
+/* === Giriş Ekranı Başlığı === */
+.header-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #a61c1c;
+}
+
+/* === Giriş Ekranı Kutuları === */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+
+/* Kullanıcı Adı ve Şifre Kutuları */
+.login-input {
+    width: 600px;
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #a61c1c;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* Giriş Yap Butonu */
+.login-button {
+    background-color: #a61c1c;
+    color: white;
+    border: none;
+    width: 600px;
+    height: 45px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.login-button:hover {
+    background-color: #800000;
+}
+
 /* === Genel Input ve Label Grupları (600px Genişlikte) === */
 .input-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Alt alta sıralama */
     align-items: center;
     gap: 5px;
     margin-bottom: 15px;
@@ -21,8 +68,6 @@ body {
 .input-label {
     font-weight: bold;
     font-size: 16px;
-    text-align: left;
-    width: 600px;
 }
 
 /* === Tüm Input ve Select Alanları (600px Genişlikte) === */
@@ -36,13 +81,12 @@ input, select {
     padding: 5px;
 }
 
-/* === Dayanak Varlık Seçimi ve Elle Gir Kutusu === */
+/* === Dayanak Varlık Fiyatı Alanı === */
 .input-container {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    width: 600px;
-    margin-bottom: 10px;
+    justify-content: center;
+    gap: 10px; /* Checkbox ile kutu arasına mesafe */
 }
 
 /* === Elle Gir Checkbox ve Label === */
@@ -58,7 +102,7 @@ input, select {
     margin-left: 5px;
 }
 
-/* === Butonlar (Hesapla & Çıkış Yap) === */
+/* === Hesapla Butonu (600px Genişlikte) === */
 button {
     background-color: #a61c1c;
     color: white;
@@ -70,16 +114,10 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
-    margin-top: 10px;
 }
 
 button:hover {
     background-color: #800000;
-}
-
-/* === Hesapla Butonu Ortalanmış === */
-#calculate {
-    margin-top: 20px;
 }
 
 /* === Önerilen Opsiyon Fiyatı Alanı (600px Genişlikte) === */
