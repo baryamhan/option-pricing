@@ -224,9 +224,14 @@ function calculateOptionPrice() {
             if (dividendDate > today && dividendDate <= expiryDate) {
                 dividendYield = dividend / spotPrice;
             }
+		
             // ✅ 2. Slope sabit değer olarak -0.05
             const slope = -0.05;
 
+	    // ✅ Eğer Call'sa Call Curvature'u Put'sa Put Curvature'u kullan
+	    const callcur = selectedAsset["Call Curvature"]
+	    const putcur = selectedAsset["Put Curvature"]
+		
             // ✅ 3. Forward fiyatını Euler yöntemiyle hesapla
             const fwd = spotPrice * Math.exp((interestRate - dividendYield) * (daysToExpiry / 365));
             
@@ -238,9 +243,18 @@ function calculateOptionPrice() {
                 ? Math.max(logStrikeFwd, -0.5) 
                 : Math.min(logStrikeFwd, 0.5);
 
-            // ✅ 6. Adjusted Volatility hesapla
-            const adjustedVolatility = atmVol + (slope * X) + Math.pow(X, 2);
+            // ✅ 6. Adjusted Volatility hesapla Call/Put'a göre
+            let adjustedVolatility;
 
+	    if (optionType === "Call") {
+                adjustedVolatility = (atmVol + (slope * X) + (Math.pow(X, 2) * callcur));
+            } else if (optionType === "Put") {
+                adjustedVolatility = (atmVol + (slope * X) + (Math.pow(X, 2) * putcur));
+            } else {
+                alert("Hata: Geçersiz opsiyon türü!");
+                return;
+            }	
+		
 	    // ✅ 7. Güncellenmiş volatiliteyi input'a yaz
             document.getElementById("volatility").value = (adjustedVolatility * 100).toFixed(2);
 		
