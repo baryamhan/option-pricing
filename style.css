@@ -1,4 +1,4 @@
-/* === Genel Sayfa Stili === */
+/* === Genel Sayfa Stili === */ 
 body {
     font-family: Arial, sans-serif;
     background-color: #fff;
@@ -8,74 +8,30 @@ body {
     padding: 20px;
 }
 
-/* === Giriş Ekranı Başlığı === */
-.header-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #a61c1c;
-}
-
-/* === Giriş Ekranı Kutuları === */
-.login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 50px;
-}
-
-/* Kullanıcı Adı ve Şifre Kutuları */
-.login-input {
-    width: 600px;
-    height: 40px;
-    font-size: 16px;
-    text-align: center;
-    border: 1px solid #a61c1c;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-/* Giriş Yap Butonu */
-.login-button {
-    background-color: #a61c1c;
-    color: white;
-    border: none;
-    width: 600px;
-    height: 45px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 10px;
-}
-
-.login-button:hover {
-    background-color: #800000;
-}
-
-/* === Genel Input ve Label Grupları (300px Genişlikte) === */
+/* === Genel Input ve Label Grupları (Kutular alt alta 600px genişlikte) === */
 .input-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Alt alta sıralama */
     align-items: center;
     gap: 10px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-
+    margin-bottom: 15px;
+    width: 600px; /* Her kutunun sabit genişliği */
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* === Label Stil Ayarları === */
+/* === Label Stili (Bağlı olduğu kutuyla aynı hizada) === */
 .input-label {
     font-weight: bold;
     font-size: 16px;
+    width: 600px; /* Label genişliği kutuyla aynı olacak */
+    text-align: left; /* Metni sola hizala */
 }
 
-/* === Tüm Input ve Select Alanları (300px Genişlikte) === */
+/* === Tüm Input ve Select Alanları (600px Genişlik) === */
 input, select {
-    width: 300px;
-    height: 40px;
+    width: 600px; /* Belirlenen genişlik */
+    height: 35px;
     font-size: 16px;
     text-align: center;
     border: 1px solid #a61c1c;
@@ -83,24 +39,27 @@ input, select {
     padding: 5px;
 }
 
-/* === Dayanak Varlık Fiyatı Alanı === */
+/* === Dayanak Varlık Fiyatı ve Elle Gir Kutusunu Yan Yana Getir === */
 .input-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px; /* Checkbox ile kutu arasına mesafe */
+    width: 600px;
+    justify-content: space-between;
 }
 
-/* === Elle Gir Checkbox ve Label === */
+/* Dayanak fiyatı giriş kutusu */
+#spotPrice {
+    width: 500px; /* Büyük kutu */
+}
+
+/* Checkbox ve Elle Gir metni */
 #manualSpot {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
+    width: 20px;
+    height: 20px;
 }
 
 .checkbox-label {
     font-size: 16px;
-    cursor: pointer;
     margin-left: 5px;
 }
 
@@ -109,13 +68,14 @@ button {
     background-color: #a61c1c;
     color: white;
     border: none;
-    width: 300px;
+    width: 600px;
     height: 40px;
     font-size: 18px;
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
+    margin-top: 10px;
 }
 
 button:hover {
@@ -131,7 +91,7 @@ button:hover {
     border: 1px solid #a61c1c;
     border-radius: 5px;
     padding: 5px;
-    width: 300px;
+    width: 600px;
     height: 40px;
     text-align: center;
 }
