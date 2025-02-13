@@ -16,10 +16,12 @@
             <label for="asset">Dayanak Varlık Seçimi:</label>
             <select id="asset" onchange="updateAssetDetails()"></select>
 
-            <!-- Dayanak Fiyatı -->
+            <!-- Dayanak Fiyatı --> (Varsayılan 100, Elle Gir Seçeneği)
             <label for="spotPrice">Dayanak Varlık Fiyatı:</label>
             <input type="number" id="spotPrice" value="100" readonly>
-
+            <label for="manualSpot">
+            <input type="checkbox" id="manualSpot" onchange="toggleManualSpot()">Elle Gir</label> 
+		
             <!-- Call/Put Seçimi -->
             <label for="optionType">Opsiyon Türü:</label>
             <select id="optionType">
@@ -85,6 +87,18 @@
             fetchData(jsonFile);
         }
 
+	function toggleManualSpot() { 
+	    const spotInput = document.getElementById("spotPrice");
+	    const manualSpotCheckbox = document.getElementById("manualSpot");
+	
+	    if (manualSpotCheckbox.checked) {
+	        spotInput.removeAttribute("readonly");
+	    } else {
+	        spotInput.setAttribute("readonly", true);
+	        spotInput.value = 100; // Varsayılan değere geri döner
+	    }
+	}
+    
         async function fetchData(jsonFile) {
             try {
                 console.log("JSON Yükleniyor:", jsonFile);
