@@ -60,10 +60,10 @@ body {
 /* === Genel Input ve Label Grupları (600px Genişlikte) === */
 .input-group {
     display: flex;
-    flex-direction: column; /* Alt alta sıralama */
+    flex-direction: column;
     align-items: center;
-    gap: 5px;
-    margin-bottom: 15px;
+    gap: 10px;
+    margin-top: 50px;
 }
 
 /* === Label Stil Ayarları === */
