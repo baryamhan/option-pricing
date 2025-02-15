@@ -1,80 +1,156 @@
-/* Genel Stil */
+/* === Genel Sayfa Stili === */ 
 body {
     font-family: Arial, sans-serif;
     background-color: #fff;
-    color: #a10000; /* AK Yatırım Kırmızı */
-    margin: 0;
-    padding: 0;
+    color: #a61c1c; /* AK Yatırım Kırmızı */
     text-align: center;
-}
-
-/* Dashboard Container */
-.dashboard-container {
-    width: 50%;
-    margin: 50px auto;
+    margin: 0;
     padding: 20px;
-    background-color: #fff;
-    border: 3px solid #a10000;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Form Alanları */
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Etiketler */
-label {
+/* === Giriş Ekranı Başlığı === */
+.header-title {
+    font-size: 22px;
     font-weight: bold;
+    margin-bottom: 20px;
+    color: #a61c1c;
+}
+
+/* === Giriş Ekranı Kutuları (Alt Alta) === */
+.login-container {
+    display: flex;
+    flex-direction: column; /* Alt alta sıralama */
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+
+/* Kullanıcı Adı ve Şifre Kutuları */
+.login-input {
+    width: 600px;
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #a61c1c;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* Giriş Yap Butonu */
+.login-button {
+    background-color: #a61c1c;
+    color: white;
+    border: none;
+    width: 600px;
+    height: 45px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
     margin-top: 10px;
 }
 
-/* Input ve Select Kutuları */
-input, select {
-    width: 80%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 2px solid #a10000;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
+.login-button:hover {
+    background-color: #800000;
 }
 
-/* Hesapla Butonu */
+/* === Dashboard İçin Genel Form Yapısı === */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 100%;
+}
+
+/* === Giriş Kutularını Sabit Genişlikte Tut === */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+/* === Label Stili === */
+.input-group label {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+}
+
+/* === Tüm Input ve Select Alanları === */
+input, select {
+    width: 300px; /* Sabit genişlik */
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #a61c1c;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* === Dayanak Varlık Fiyatı ve Elle Gir Kutusunu Yan Yana Getir === */
+.input-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Checkbox ve Elle Gir metni */
+#manualSpot {
+    width: 30px;
+    height: 30px;
+}
+
+.checkbox-label {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+/* === Hesapla ve Çıkış Yap Butonu === */
 button {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background-color: #a10000;
+    background-color: #a61c1c;
     color: white;
     border: none;
-    padding: 10px 20px;
     font-size: 18px;
+    font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: 0.3s;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 button:hover {
-    background-color: #7d0000;
+    background-color: #800000;
 }
 
-/* Sonuç Alanı */
-h3 {
-    margin-top: 20px;
-    color: #a10000;
+/* === Önerilen Opsiyon Fiyatı Alanı === */
+#optionPrice {
+    font-size: 18px;
+    font-weight: bold;
+    color: #a61c1c;
+    background-color: #f8f8f8;
+    border: 1px solid #a61c1c;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
 }
 
-/* Çıkış Butonu */
-button.logout {
-    background-color: white;
-    color: #a10000;
-    border: 2px solid #a10000;
+
+/* === Responsive Düzen (Mobil İçin) === */
+@media (max-width: 768px) {
+    input, select, button {
+        width: 100%; /* Küçük ekranlarda biraz küçült */
+    }
 }
 
-button.logout:hover {
-    background-color: #a10000;
-    color: white;
+@media (min-width: 1200px) {
+    input, select, button {
+        width: 300px; /* Büyük ekranlarda sabit tut */
+    }
 }
