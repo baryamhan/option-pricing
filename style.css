@@ -66,9 +66,9 @@ body {
 /* === Giriş Kutularını Sabit Genişlikte Tut === */
 .input-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    width: 600px;
+    width: 300px;
     margin-bottom: 15px;
     margin-top: 15px;
 }
