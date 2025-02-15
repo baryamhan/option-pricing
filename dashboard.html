@@ -14,7 +14,7 @@
         <form id="optionForm" class="mt-4">
             <div class="row">
                 <div class="col-md-6">
-                    <label for="asset">Dayanak Varlık Seçimi:</label>
+                    <label for="asset">Dayanak Varlık: (Seçiniz)</label>
                     <select id="asset" class="form-control" onchange="updateAssetDetails()"></select>
                 </div>
                 <div class="col-md-6">
@@ -29,21 +29,21 @@
 
             <div class="row mt-3">
                 <div class="col-md-6">
-                    <label for="optionType">Opsiyon Türü:</label>
+                    <label for="optionType">Opsiyon Türü: (Seçiniz)</label>
                     <select id="optionType" class="form-control">
                         <option value="Call" selected>Call</option>
                         <option value="Put">Put</option>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="strike">Kullanım Fiyatı:</label>
+                    <label for="strike">Kullanım Fiyatı: (Giriniz)</label>
                     <input type="number" id="strike" class="form-control">
                 </div>
             </div>
 
             <div class="row mt-3">
                 <div class="col-md-6">
-                    <label for="expiry">Vade Sonu Tarihi:</label>
+                    <label for="expiry">Vade Sonu Tarihi: (Seçiniz)</label>
                     <input type="date" id="expiry" class="form-control" onchange="calculateDaysToExpiry()">
                 </div>
                 <div class="col-md-6">
