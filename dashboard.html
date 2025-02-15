@@ -3,78 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AK Yatırım Türev Masası Opsiyon Fiyatlama Sayfası</title>
+    <title>Opsiyon Fiyatlama</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	
-    <h2 class="text-center">Hoş Geldiniz, <span id="username"></span></h2>
     <div class="container mt-4">
-        <form id="optionForm" style="border: 1px solid red; padding: 15px; border-radius: 5px;" class="mt-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="asset">Dayanak Varlık: (Seçiniz)</label>
+        <h2 class="text-center">Hoş Geldiniz, <span id="username"></span></h2>
+
+        <form id="optionForm" class="mt-4" style="border: 1px solid red; padding: 15px; border-radius: 5px;">
+            <div class="form-group row">
+                <label for="asset" class="col-sm-4 col-form-label text-right">Dayanak Varlık Seçimi:</label>
+                <div class="col-sm-8">
                     <select id="asset" class="form-control" onchange="updateAssetDetails()"></select>
-                </div>
-                <div class="col-md-6">
-                    <label for="spotPrice">Dayanak Varlık Fiyatı:</label>
-                    <div class="d-flex align-items-center">
-                        <input type="number" id="spotPrice" value="100" readonly class="form-control">
-                        <input type="checkbox" id="manualSpot" onchange="toggleManualSpot()" class="ml-2">
-                        <label for="manualSpot" class="ml-2">Elle Gir</label>
-                    </div>
                 </div>
             </div>
 
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <label for="optionType">Opsiyon Türü: (Seçiniz)</label>
+            <div class="form-group row">
+                <label for="spotPrice" class="col-sm-4 col-form-label text-right">Dayanak Varlık Fiyatı:</label>
+                <div class="col-sm-8 d-flex align-items-center">
+                    <input type="number" id="spotPrice" value="100" readonly class="form-control">
+                    <input type="checkbox" id="manualSpot" onchange="toggleManualSpot()" class="ml-2">
+                    <label for="manualSpot" class="ml-2">Elle Gir</label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="optionType" class="col-sm-4 col-form-label text-right">Opsiyon Türü:</label>
+                <div class="col-sm-8">
                     <select id="optionType" class="form-control">
                         <option value="Call" selected>Call</option>
                         <option value="Put">Put</option>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label for="strike">Kullanım Fiyatı: (Giriniz)</label>
+            </div>
+
+            <div class="form-group row">
+                <label for="strike" class="col-sm-4 col-form-label text-right">Kullanım Fiyatı:</label>
+                <div class="col-sm-8">
                     <input type="number" id="strike" class="form-control">
                 </div>
             </div>
 
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <label for="expiry">Vade Sonu Tarihi: (Seçiniz)</label>
+            <div class="form-group row">
+                <label for="expiry" class="col-sm-4 col-form-label text-right">Vade Sonu Tarihi:</label>
+                <div class="col-sm-8">
                     <input type="date" id="expiry" class="form-control" onchange="calculateDaysToExpiry()">
                 </div>
-                <div class="col-md-6">
-                    <label for="daysToExpiry">Vadeye Kalan Gün:</label>
+            </div>
+
+            <div class="form-group row">
+                <label for="daysToExpiry" class="col-sm-4 col-form-label text-right">Vadeye Kalan Gün:</label>
+                <div class="col-sm-8">
                     <input type="number" id="daysToExpiry" readonly class="form-control">
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-md-4">
-                    <label for="dividend">Temettü (Hisse Başına):</label>
-                    <input type="number" id="dividend" readonly class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label for="dividendDate">Temettü Tarihi:</label>
-                    <input type="date" id="dividendDate" readonly class="form-control">
-                </div>
-                <div class="col-md-4">
-                    <label for="interestRate">Faiz Oranı (%):</label>
-                    <input type="number" id="interestRate" readonly class="form-control">
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-md-6">
-                    <label for="volatility">Önerilen Volatilite (%):</label>
-                    <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek" class="form-control">
-                </div>
-                <div class="col-md-6">
-                    <label>Önerilen Opsiyon Fiyatı:</label>
-                    <input type="text" id="optionPrice" readonly class="form-control font-weight-bold">
                 </div>
             </div>
 
@@ -85,6 +66,7 @@
         </form>
     </div>
 
+    <script src="script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const loggedInUser = localStorage.getItem("loggedInUser");
