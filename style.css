@@ -148,6 +148,13 @@ button:hover {
     text-align: center;
 }
 
+.container {
+    text-align: left;
+    margin-left: 0;  /* Formu sola yasla */
+    margin-right: auto;
+    width: 600px;  /* Formun genişliğini sabitle */
+}
+
 /* === Responsive Düzen (Mobil İçin) === */
 @media (max-width: 768px) {
     input, select, button {
