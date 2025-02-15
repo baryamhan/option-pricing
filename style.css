@@ -3,9 +3,9 @@ body {
     font-family: Arial, sans-serif;
     background-color: #fff;
     color: #a61c1c; /* AK Yatırım Kırmızı */
-    text-align: left;
-    margin: auto;
-    padding: 10px;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
 }
 
 /* === Giriş Ekranı Başlığı === */
