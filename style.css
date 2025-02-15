@@ -27,8 +27,8 @@ body {
 
 /* Kullanıcı Adı ve Şifre Kutuları */
 .login-input {
-    width: 600px;
-    height: 40px;
+    width: 400px;
+    height: 30px;
     font-size: 16px;
     text-align: center;
     border: 1px solid #a61c1c;
@@ -41,8 +41,8 @@ body {
     background-color: #a61c1c;
     color: white;
     border: none;
-    width: 600px;
-    height: 45px;
+    width: 400px;
+    height: 30px;
     font-size: 18px;
     font-weight: bold;
     border-radius: 5px;
