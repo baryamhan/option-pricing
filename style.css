@@ -97,12 +97,6 @@ input, select {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 300px;
-}
-
-/* Dayanak fiyatı giriş kutusu */
-#spotPrice {
-    width: 300px; /* Büyük kutu */
 }
 
 /* Checkbox ve Elle Gir metni */
