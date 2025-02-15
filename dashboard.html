@@ -179,7 +179,7 @@
             const selectedAsset = data.find(item => item["Asset"] === asset);
 
             if (selectedAsset) {
-                document.getElementById("dividend").value = selectedAsset["Dividend"];
+                document.getElementById("dividend").value = selectedAsset["Dividend"].toFixed(2);
                 document.getElementById("interestRate").value = selectedAsset["Interest Rate (%)"];
                 document.getElementById("volatility").value = "";
 
