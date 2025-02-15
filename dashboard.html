@@ -96,7 +96,6 @@
 
             <div class="text-center mt-4">
                 <button type="button" class="btn btn-primary" onclick="calculateOptionPrice()">Hesapla</button>
-                <button class="btn btn-danger ml-2" onclick="logout()">Çıkış Yap</button>
             </div>
 
         </form>
@@ -332,12 +331,6 @@ function calculateOptionPrice() {
         });
 }
 
-
-
-        function logout() {
-            localStorage.removeItem("loggedInUser");
-            window.location.href = "index.html";
-        }
     </script>
 
 </body>
