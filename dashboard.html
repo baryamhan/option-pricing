@@ -254,7 +254,7 @@ function calculateOptionPrice() {
             // ✅ Eğer temettü tarihi geçmişteyse veya vade sonu tarihinden büyükse temettü verimi = 0
             let dividendYield = 0;
             if (dividendDate > today && dividendDate <= expiryDate) {
-                dividendYield = dividend / spotPrice;
+                dividendYield = dividend / spotPrice * 365 / daysToExpiry;
             }
 		
             // ✅ 2. Slope sabit değer olarak -0.05
