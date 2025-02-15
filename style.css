@@ -59,7 +59,7 @@ body {
 .form-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     width: 100%;
 }
 
@@ -98,11 +98,6 @@ input, select {
     align-items: center;
     justify-content: space-between;
     width: 300px;
-}
-
-/* Dayanak fiyatı giriş kutusu */
-#spotPrice {
-    width: 300px; /* Büyük kutu */
 }
 
 /* Checkbox ve Elle Gir metni */
