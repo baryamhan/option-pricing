@@ -8,102 +8,199 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	
     <div class="container mt-4">
         <h2 class="text-center">Hoş Geldiniz, <span id="username"></span></h2>
 
-        <form id="optionForm" class="mt-4" style="border: 1px solid red; padding: 15px; border-radius: 5px;; width: 600px; margin-left: 0;">
-            <div class="form-group row">
-                <label for="asset" class="col-sm-4 col-form-label text-left">Dayanak Varlık Seçimi:</label>
-                <div class="col-sm-8">
-                    <select id="asset" class="form-control" onchange="updateAssetDetails()"></select>
-                </div>
+        <div class="row justify-content-between">
+            <!-- İlk Form -->
+            <div class="col-md-5 col-12 mb-3">
+                <form id="optionForm1" class="mt-4" style="border: 1px solid red; padding: 15px; border-radius: 5px; width: 100%;">
+                    <h4>Hesaplama Alanı</h4>
+                    <div class="form-group row">
+                        <label for="asset" class="col-sm-4 col-form-label text-left">Dayanak Varlık Seçimi:</label>
+                        <div class="col-sm-8">
+                            <select id="asset" class="form-control" onchange="updateAssetDetails()"></select>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="spotPrice" class="col-sm-4 col-form-label text-left">Dayanak Varlık Fiyatı:</label>
+                        <div class="col-sm-8 d-flex align-items-center">
+                            <input type="number" id="spotPrice" value="100" readonly class="form-control">
+                            <input type="checkbox" id="manualSpot" onchange="toggleManualSpot()" class="ml-2">
+                            <label for="manualSpot" class="ml-2">FarklıFiyatGir</label>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="optionType" class="col-sm-4 col-form-label text-left">Opsiyon Türü:</label>
+                        <div class="col-sm-8">
+                            <select id="optionType" class="form-control">
+                                <option value="Call" selected>Call</option>
+                                <option value="Put">Put</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="strike" class="col-sm-4 col-form-label text-left">Kullanım Fiyatı:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="strike" class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="expiry" class="col-sm-4 col-form-label text-left">Vade Sonu Tarihi:</label>
+                        <div class="col-sm-8">
+                            <input type="date" id="expiry" class="form-control" onchange="calculateDaysToExpiry()">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="daysToExpiry" class="col-sm-4 col-form-label text-left">Vadeye Kalan Gün:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="daysToExpiry" readonly class="form-control">
+                        </div>
+                    </div>
+        		
+                    <div class="form-group row">
+                        <label for="dividend" class="col-sm-4 col-form-label text-left">Temettü (Hisse Başına):</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="dividend" readonly class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="dividendDate" class="col-sm-4 col-form-label text-left">Temettü Tarihi:</label>
+                        <div class="col-sm-8">
+                            <input type="date" id="dividendDate" readonly class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="interestRate" class="col-sm-4 col-form-label text-left">Faiz Oranı (%):</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="interestRate" readonly class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="volatility" class="col-sm-4 col-form-label text-left">Önerilen Volatilite (%):</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek" class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="optionPrice" class="col-sm-4 col-form-label text-left">Önerilen Opsiyon Fiyatı:</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="optionPrice" readonly class="form-control font-weight-bold">
+                        </div>
+                    </div>
+        
+                    <div class="text-center mt-4">
+                        <button type="button" class="btn btn-primary" onclick="calculateOptionPrice()">Hesapla</button>
+                    </div>
+                </form>
             </div>
 
-            <div class="form-group row">
-                <label for="spotPrice" class="col-sm-4 col-form-label text-left">Dayanak Varlık Fiyatı:</label>
-                <div class="col-sm-8 d-flex align-items-center">
-                    <input type="number" id="spotPrice" value="100" readonly class="form-control">
-                    <input type="checkbox" id="manualSpot" onchange="toggleManualSpot()" class="ml-2">
-                    <label for="manualSpot" class="ml-2">FarklıFiyatGir</label>
-                </div>
+            <!-- İkinci Form -->
+            <div class="col-md-5 col-12 mb-3">
+                <form id="optionForm2" class="mt-4" style="border: 1px solid blue; padding: 15px; border-radius: 5px; width: 100%;">
+                    <h4>Açıklama Alanı</h4>
+                    <div class="form-group row">
+                        <label for="asset" class="col-sm-4 col-form-label text-left">Dayanak Varlık Seçimi:</label>
+                        <div class="col-sm-8">
+                            <select id="asset" class="form-control" onchange="updateAssetDetails()"></select>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="spotPrice" class="col-sm-4 col-form-label text-left">Dayanak Varlık Fiyatı:</label>
+                        <div class="col-sm-8 d-flex align-items-center">
+                            <input type="number" id="spotPrice" value="100" readonly class="form-control">
+                            <input type="checkbox" id="manualSpot" onchange="toggleManualSpot()" class="ml-2">
+                            <label for="manualSpot" class="ml-2">FarklıFiyatGir</label>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="optionType" class="col-sm-4 col-form-label text-left">Opsiyon Türü:</label>
+                        <div class="col-sm-8">
+                            <select id="optionType" class="form-control">
+                                <option value="Call" selected>Call</option>
+                                <option value="Put">Put</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="strike" class="col-sm-4 col-form-label text-left">Kullanım Fiyatı:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="strike" class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="expiry" class="col-sm-4 col-form-label text-left">Vade Sonu Tarihi:</label>
+                        <div class="col-sm-8">
+                            <input type="date" id="expiry" class="form-control" onchange="calculateDaysToExpiry()">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="daysToExpiry" class="col-sm-4 col-form-label text-left">Vadeye Kalan Gün:</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="daysToExpiry" readonly class="form-control">
+                        </div>
+                    </div>
+        		
+                    <div class="form-group row">
+                        <label for="dividend" class="col-sm-4 col-form-label text-left">Temettü (Hisse Başına):</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="dividend" readonly class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="dividendDate" class="col-sm-4 col-form-label text-left">Temettü Tarihi:</label>
+                        <div class="col-sm-8">
+                            <input type="date" id="dividendDate" readonly class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="interestRate" class="col-sm-4 col-form-label text-left">Faiz Oranı (%):</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="interestRate" readonly class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="volatility" class="col-sm-4 col-form-label text-left">Önerilen Volatilite (%):</label>
+                        <div class="col-sm-8">
+                            <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek" class="form-control">
+                        </div>
+                    </div>
+        
+                    <div class="form-group row">
+                        <label for="optionPrice" class="col-sm-4 col-form-label text-left">Önerilen Opsiyon Fiyatı:</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="optionPrice" readonly class="form-control font-weight-bold">
+                        </div>
+                    </div>
+        
+                    <div class="text-center mt-4">
+                        <button type="button" class="btn btn-primary" onclick="calculateOptionPrice()">Hesapla</button>
+                    </div>
+                </form>
             </div>
-
-            <div class="form-group row">
-                <label for="optionType" class="col-sm-4 col-form-label text-left">Opsiyon Türü:</label>
-                <div class="col-sm-8">
-                    <select id="optionType" class="form-control">
-                        <option value="Call" selected>Call</option>
-                        <option value="Put">Put</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="strike" class="col-sm-4 col-form-label text-left">Kullanım Fiyatı:</label>
-                <div class="col-sm-8">
-                    <input type="number" id="strike" class="form-control">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="expiry" class="col-sm-4 col-form-label text-left">Vade Sonu Tarihi:</label>
-                <div class="col-sm-8">
-                    <input type="date" id="expiry" class="form-control" onchange="calculateDaysToExpiry()">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="daysToExpiry" class="col-sm-4 col-form-label text-left">Vadeye Kalan Gün:</label>
-                <div class="col-sm-8">
-                    <input type="number" id="daysToExpiry" readonly class="form-control">
-                </div>
-            </div>
-		
-            <div class="form-group row">
-                <label for="dividend" class="col-sm-4 col-form-label text-left">Temettü (Hisse Başına):</label>
-                <div class="col-sm-8">
-                    <input type="number" id="dividend" readonly class="form-control">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="dividendDate" class="col-sm-4 col-form-label text-left">Temettü Tarihi:</label>
-                <div class="col-sm-8">
-                    <input type="date" id="dividendDate" readonly class="form-control">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="interestRate" class="col-sm-4 col-form-label text-left">Faiz Oranı (%):</label>
-                <div class="col-sm-8">
-                    <input type="number" id="interestRate" readonly class="form-control">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="volatility" class="col-sm-4 col-form-label text-left">Önerilen Volatilite (%):</label>
-                <div class="col-sm-8">
-                    <input type="number" id="volatility" readonly placeholder="Hesaplandıktan sonra görünecek" class="form-control">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="optionPrice" class="col-sm-4 col-form-label text-left">Önerilen Opsiyon Fiyatı:</label>
-                <div class="col-sm-8">
-                    <input type="text" id="optionPrice" readonly class="form-control font-weight-bold">
-                </div>
-            </div>
-
-            <div class="text-center mt-4">
-                <button type="button" class="btn btn-primary" onclick="calculateOptionPrice()">Hesapla</button>
-            </div>
-
-        </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
     <script>
+	    
         document.addEventListener("DOMContentLoaded", () => {
             const loggedInUser = localStorage.getItem("loggedInUser");
             if (!loggedInUser) {
