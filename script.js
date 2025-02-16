@@ -9,6 +9,15 @@
             }
         });
 
+	document.getElementById("commentButton").addEventListener("click", function () {
+	    activateOptionDescription();
+	});
+
+	function activateOptionDescription() {
+		drawProfitLossChart();
+		updateOptionDescription();
+	}
+
 	function drawProfitLossChart() {
 	    window.profitLossChart = null;
 	    const canvasContainer = document.getElementById('canvasContainer');
