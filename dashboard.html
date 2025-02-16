@@ -107,13 +107,15 @@
             <!-- İkinci Form -->
             <div class="col-md-6 col-12 mb-3">
                 <form id="optionForm2" class="mt-4" style="border: 3px solid blue; padding: 10px; border-radius: 5px; width: 100%;">
-                    <h4 class="text-center mb-3">Açıklama Alanı</h4>
+                    <h4 class="text-center mb-3">Bilgilendirme Alanı</h4>
+		        <p id="optionDescription" style="font-size: 14px; margin-top: 10px;">
+		            Bilgilendirme hesaplama işlemi bittikten sonra yapılmaktadır.
+		        </p>			
                 </form>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
     <script>
 	    
         document.addEventListener("DOMContentLoaded", () => {
@@ -127,6 +129,7 @@
             }
         });
 
+	
         function loadDataForUser(user) {
             const jsonFile = user === "YBA" 
                 ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
