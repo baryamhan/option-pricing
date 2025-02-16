@@ -9,6 +9,12 @@
             }
         });
 
+	document.getElementById("calculateButton").addEventListener("click", function () {
+	    setTimeout(() => {
+	        document.getElementById("calculateButton").click();
+	    }, 100); // 100 milisaniye sonra ikinci kez tıklama tetiklenir
+	});
+
 	function activateOptionDescription() {
 	    const descriptionElement = document.getElementById("optionDescription");
 	
