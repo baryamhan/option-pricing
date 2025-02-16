@@ -378,6 +378,5 @@
 	            console.error("Hata:", error);
 	            alert("Veriler yüklenirken hata oluştu.");
 	        });
-		    updateOptionDescription();
-		    drawProfitLossChart();
+
 	}
