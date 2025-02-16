@@ -9,9 +9,7 @@
             }
         });
 
-	document.getElementById("commentButton").addEventListener("click", function () {
-	    activateOptionDescription();
-	});
+    document.getElementById("optionPrice").addEventListener("change", activateOptionDescription);
 
 	function activateOptionDescription() {
 		drawProfitLossChart();
@@ -42,7 +40,7 @@
 	    // Gerekli değerleri al
 	    const strikePrice = parseFloat(document.getElementById("strike").value);
 	    const optionType = document.getElementById("optionType").value;
-	    const premium = document.getElementById("optionPrice").value; // Hesaplanan opsiyon fiyatı
+	    const premium = parseFloat(document.getElementById("optionPrice").value); // Hesaplanan opsiyon fiyatı
 	
 	    // Fiyat seviyelerini belirle (örnek: 10 fiyat seviyesi önce ve sonra)
 	    priceLevels = [];
@@ -248,8 +246,6 @@
 
         document.getElementById("daysToExpiry").value = daysToExpiry;
     }
-
-    document.getElementById("expiry").addEventListener("change", calculateDaysToExpiry);
 
 	function normalCDF(x) {
 	    // Standart normal dağılım fonksiyonu (N(x)) için Gauss hata fonksiyonu yaklaşımı
