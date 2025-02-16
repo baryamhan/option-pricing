@@ -9,8 +9,6 @@
             }
         });
 
-    document.getElementById("optionPrice").addEventListener("change", activateOptionDescription);
-
 	function activateOptionDescription() {
 		drawProfitLossChart();
 		updateOptionDescription();
@@ -374,5 +372,5 @@
 	            console.error("Hata:", error);
 	            alert("Veriler yüklenirken hata oluştu.");
 	        });
-
+		activateOptionDescription();
 	}
