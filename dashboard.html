@@ -117,7 +117,7 @@
     </div>
 
     <script>
-	    
+
         document.addEventListener("DOMContentLoaded", () => {
             const loggedInUser = localStorage.getItem("loggedInUser");
             if (!loggedInUser) {
@@ -129,7 +129,33 @@
             }
         });
 
+	function updateOptionDescription() {
+	    // Seçili hisse adı
+	    const assetElement = document.getElementById("asset");
+	    if (!assetElement) return;
 	
+	    const assetName = assetElement.value;
+	
+	    // Kullanım fiyatı (2 ondalık basamak)
+	    const strikeElement = document.getElementById("strike");
+	    if (!strikeElement) return;
+	
+	    const strikePrice = parseFloat(strikeElement.value).toFixed(2);
+	
+	    // Call veya Put seçimi
+	    const optionTypeElement = document.getElementById("optionType");
+	    if (!optionTypeElement) return;
+	
+	    const optionType = optionTypeElement.value;
+	    const action = optionType === "Call" ? "alma" : "satma";
+	
+	    // Açıklama metni oluştur
+	    const description = `Fiyatladığınız opsiyon yatırımcının <b>${assetName}</b> hissesini <b>${strikePrice}</b> fiyatından ${action} hakkını kurumumuza satmak istediği anlamına gelmektedir.`;
+	
+	    // Açıklama metnini ikinci formdaki <p> etiketi içine yaz
+	    document.getElementById("optionDescription").innerHTML = description;
+	}	
+	    
         function loadDataForUser(user) {
             const jsonFile = user === "YBA" 
                 ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
@@ -345,6 +371,9 @@ function calculateOptionPrice() {
             console.error("Hata:", error);
             alert("Veriler yüklenirken hata oluştu.");
         });
+
+	updateOptionDescription();
+
 }
 
     </script>
