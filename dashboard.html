@@ -161,7 +161,7 @@
 	    const premium = document.getElementById("optionPrice").value; // Hesaplanan opsiyon fiyatı
 	
 	    // Fiyat seviyelerini belirle (örnek: 10 fiyat seviyesi önce ve sonra)
-	    let priceLevels = [];
+	    priceLevels = [];
 	    for (let i = -10; i <= 10; i++) {
 	        priceLevels.push(strikePrice + i * 2); // 2'şer fiyat aralıklarıyla
 	    }
