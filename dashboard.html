@@ -471,6 +471,8 @@ function calculateOptionPrice() {
             alert("Veriler yüklenirken hata oluştu.");
         });
 
+    	console.log("Opsiyon fiyatı hesaplandı:", optionPrice);
+
 	updateOptionDescription(optionPrice);
     	drawProfitLossChart(optionPrice); // Grafiği çağır
 
