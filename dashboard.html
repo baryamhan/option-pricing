@@ -169,7 +169,7 @@
 	    // Kâr/Zarar hesaplama
 	    let profitLoss = priceLevels.map(price => {
 	        if (optionType === "Call") {
-	            return Math.min(strikePrice - Price, 0) + premium; // Call opsiyon formülü
+	            return Math.min(strikePrice - price, 0) + premium; // Call opsiyon formülü
 	        } else {
 	            return Math.min(price - strikePrice, 0) + premium; // Put opsiyon formülü
 	        }
@@ -488,13 +488,12 @@ function calculateOptionPrice() {
 
             document.getElementById("optionPrice").value = optionPrice.toFixed(2);
         })
+	    updateOptionDescription();
+	    drawProfitLossChart();
         .catch(error => {
             console.error("Hata:", error);
             alert("Veriler yüklenirken hata oluştu.");
         });
-
-updateOptionDescription();
-drawProfitLossChart();
 
 }
 
