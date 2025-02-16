@@ -493,8 +493,8 @@ function calculateOptionPrice() {
             alert("Veriler yüklenirken hata oluştu.");
         });
 
-	    updateOptionDescription(optionPrice);
-    	    drawProfitLossChart(1);
+	    updateOptionDescription(optionPrice.toFixed(2));
+    	    drawProfitLossChart(optionPrice.toFixed(2));
 
 }
 
