@@ -384,28 +384,6 @@ function normalCDF(x) {
     
     return 0.5 * (1.0 + sign * erfApprox);
 }
-
-// Opsiyon fiyatı değiştiğinde açıklama ve grafiği güncelleyici fonksiyon
-function onOptionPriceChange() {
-    console.log("Opsiyon fiyatı değişti, açıklama ve grafik güncelleniyor...");
-    updateOptionDescription();
-    drawProfitLossChart();
-}
-
-// "optionPrice" input alanının değişimini izleyen MutationObserver oluştur
-const optionPriceObserver = new MutationObserver(() => {
-    const optionPriceElement = document.getElementById("optionPrice");
-    if (optionPriceElement && optionPriceElement.value !== "" && !isNaN(optionPriceElement.value)) {
-        onOptionPriceChange(); // Opsiyon fiyatı değiştiğinde çalıştır
-    }
-});
-
-// Opsiyon fiyatı input alanını izle
-const optionPriceElement = document.getElementById("optionPrice");
-if (optionPriceElement) {
-    optionPriceObserver.observe(optionPriceElement, { attributes: true, childList: true, subtree: true });
-}
-
 	    
 function calculateOptionPrice() {
     const asset = document.getElementById("asset").value;
@@ -514,7 +492,11 @@ function calculateOptionPrice() {
             console.error("Hata:", error);
             alert("Veriler yüklenirken hata oluştu.");
         });
-
+    // **0.1 saniye sonra açıklama ve grafik güncellensin**
+    setTimeout(() => {
+        updateOptionDescription();
+        drawProfitLossChart();
+    }, 100);
 }
 
     </script>
