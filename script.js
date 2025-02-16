@@ -10,9 +10,53 @@
         });
 
 	function activateOptionDescription() {
-		drawProfitLossChart();
-		updateOptionDescription();
+	    const descriptionElement = document.getElementById("optionDescription");
+	
+	    // Eğer opsiyon fiyatı hesaplanmamışsa, uyarı ver
+	    if (!document.getElementById("optionPrice").value) {
+	        descriptionElement.innerHTML = "Lütfen önce opsiyon fiyatını hesaplayın.";
+	        return;
+	    }
+	
+	    // Gerekli değişkenleri al
+	    const assetName = document.getElementById("asset").value;
+	    const strikePrice = parseFloat(document.getElementById("strike").value).toFixed(2);
+	    const expiryDate = document.getElementById("expiry").value;
+	    const premium = parseFloat(document.getElementById("optionPrice").value).toFixed(2);
+	    const optionType = document.getElementById("optionType").value;
+	
+	    // Başabaş fiyatını hesapla
+	    const breakeven = optionType === "Call" 
+	        ? (parseFloat(strikePrice) + parseFloat(premium)).toFixed(2) 
+	        : (parseFloat(strikePrice) - parseFloat(premium)).toFixed(2);
+	
+	    // Senaryoları oluştur
+	    const scenario1 = `
+	        Senaryo 1: <br>
+	        Eğer <b>${assetName}</b> hissesi <b>${expiryDate}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
+	        ${optionType === "Call" ? "düşük" : "yüksek"} ise yatırımcı <b>${premium} TL</b> kadar net kar elde eder.
+	    `;
+	
+	    const scenario2 = `
+	        Senaryo 2: <br>
+	        Eğer <b>${assetName}</b> hissesi <b>${expiryDate}</b> tarihinde <b>${breakeven} TL</b> fiyatına eşit ise 
+	        yatırımcı başta elde ettiği <b>${premium} TL</b> opsiyon primini kaybetse de nette herhangi bir kar veya zararı olmaz.
+	    `;
+	
+	    const scenario3 = `
+	        Senaryo 3: <br>
+	        Eğer <b>${assetName}</b> hissesi <b>${expiryDate}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
+	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla fiyat arasındaki fark kadar zarar eder. 
+	        Elde ettiği opsiyon primiyle bu zararı sınırlar.
+	    `;
+	
+	    // Açıklama metnini güncelle
+	    descriptionElement.innerHTML = `
+	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 3 senaryo aşağıdaki gibidir:<br><br>
+	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3}
+	    `;
 	}
+
 
 	function drawProfitLossChart() {
 	    window.profitLossChart = null;
@@ -33,7 +77,6 @@
 	
 	    // Yeni canvas için context al
 	    const ctx = newCanvas.getContext('2d');
-
 	
 	    // Gerekli değerleri al
 	    const strikePrice = parseFloat(document.getElementById("strike").value);
