@@ -365,7 +365,20 @@
     }
 
     document.getElementById("expiry").addEventListener("change", calculateDaysToExpiry);
-	    
+
+async function runOptionCalculation() {
+    try {
+        await calculateOptionPrice(); // Hesaplamanın bitmesini bekle
+        updateOptionDescription();
+        drawProfitLossChart();
+    } catch (error) {
+        console.error("Hata:", error);
+    }
+}
+
+// Butona tıklandığında çağır
+document.getElementById("calculateButton").addEventListener("click", runOptionCalculation);
+
 function normalCDF(x) {
     // Standart normal dağılım fonksiyonu (N(x)) için Gauss hata fonksiyonu yaklaşımı
     const p = 0.3275911;
@@ -492,11 +505,7 @@ function calculateOptionPrice() {
             console.error("Hata:", error);
             alert("Veriler yüklenirken hata oluştu.");
         });
-    // **0.1 saniye sonra açıklama ve grafik güncellensin**
-    setTimeout(() => {
-        updateOptionDescription();
-        drawProfitLossChart();
-    }, 100);
+
 }
 
     </script>
