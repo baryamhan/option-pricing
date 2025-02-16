@@ -57,7 +57,7 @@
 	        Senaryo 3: <br>
 	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
 	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla fiyat arasındaki fark kadar zarar eder. 
-	        Elde ettiği opsiyon primiyle bu zararı sınırlar.
+	        Elde ettiği opsiyon primiyle bu zararı sınırlar. Aşağıdaki grafikte potansiyel kar zarar durumu görülebilir:
 	    `;
 	
 	    // Açıklama metnini güncelle
