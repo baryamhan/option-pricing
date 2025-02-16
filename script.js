@@ -43,6 +43,20 @@
 	        const year = expiryDate.getFullYear(); // Yıl
 	        expiryDateFormatted = `${day} ${month} ${year}`; // "gg aaaa yyyy" formatında
 	    }
+
+	    // Temettü tarihi bilgisi
+	    const dividendDateInput = document.getElementById("dividendDate");
+	    let dividendMessage = "";
+	    
+	    if (dividendDateInput && dividendDateInput.value) {
+	        const dividendDate = new Date(dividendDateInput.value);
+	        
+	        if (expiryDate < dividendDate) {
+	            dividendMessage = `<b>Temettü bu opsiyonu etkilememektedir.</b><br><br>`;
+	        } else {
+	            dividendMessage = `<b>Bu hissede beklenen bir temettü vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
+	        }
+	    }
 	    // Başabaş fiyatını hesapla
 	    const breakeven = optionType === "Call" 
 	        ? (parseFloat(strikePrice) + parseFloat(premium)).toFixed(2) 
@@ -58,7 +72,7 @@
 	    const scenario2 = `
 	        Senaryo 2: <br>
 	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatına eşit ise 
-	        yatırımcı başta elde ettiği <b>${premium} TL</b> opsiyon primini kaybetse de nette herhangi bir kar veya zararı olmaz.
+	        yatırımcı opsiyondan elde ettiği <b>${premium} TL</b> opsiyon primini kaybetse de nette herhangi bir kar veya zararı olmaz.
 	    `;
 	
 	    const scenario3 = `
@@ -70,6 +84,7 @@
 	
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
+     		${dividendMessage}<br><br>
 	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 3 senaryo aşağıdaki gibidir:<br><br>
 	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3}
 	    `;
