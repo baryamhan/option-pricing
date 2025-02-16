@@ -186,7 +186,12 @@
 	        window.profitLossChart.destroy();
 	        window.profitLossChart = null; // Değişkeni sıfırla
 	    }
-	
+
+	    console.log("strikePrice:", strikePrice);
+	    console.log("optionPrice (premium):", premium);
+	    console.log("priceLevels:", priceLevels);
+	    console.log("profitLoss (ilk hesaplama):", profitLoss);
+		
 	    // Grafik oluştur
 	    window.profitLossChart = new Chart(ctx, {
 	        type: 'line',
