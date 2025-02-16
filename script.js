@@ -1,5 +1,3 @@
-    <script>
-
         document.addEventListener("DOMContentLoaded", () => {
             const loggedInUser = localStorage.getItem("loggedInUser");
             if (!loggedInUser) {
@@ -374,5 +372,3 @@
 		    updateOptionDescription();
 		    drawProfitLossChart();
 	}
-
-    </script>
