@@ -50,8 +50,9 @@
 	    
 	    if (dividendDateInput && dividendDateInput.value) {
 	        const dividendDate = new Date(dividendDateInput.value);
-	        
-	        if (expiryElement < dividendDate) {
+	        const expiryDate = new Date(expiryElement.value);
+		    
+	        if (expiryDate < dividendDate) {
 	            dividendMessage = `<b>Temettü bu opsiyonu etkilememektedir.</b><br><br>`;
 	        } else {
 	            dividendMessage = `<b>Bu hissede beklenen bir temettü vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
@@ -84,7 +85,7 @@
 	
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
-     		${dividendMessage}<br><br>
+     		${dividendMessage}
 	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 3 senaryo aşağıdaki gibidir:<br><br>
 	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3}
 	    `;
