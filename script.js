@@ -51,7 +51,7 @@
 	    if (dividendDateInput && dividendDateInput.value) {
 	        const dividendDate = new Date(dividendDateInput.value);
 	        
-	        if (expiryDate < dividendDate) {
+	        if (expiryElement < dividendDate) {
 	            dividendMessage = `<b>Temettü bu opsiyonu etkilememektedir.</b><br><br>`;
 	        } else {
 	            dividendMessage = `<b>Bu hissede beklenen bir temettü vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
