@@ -133,7 +133,24 @@
 
 	function drawProfitLossChart(x) {
 	    window.profitLossChart = null;
-	    const ctx = document.getElementById('profitLossChart').getContext('2d');
+	    const canvasContainer = document.getElementById('canvasContainer');
+	
+	    // Önceki canvas'ı sil ve yeniden oluştur
+	    const oldCanvas = document.getElementById('profitLossChart');
+	    if (oldCanvas) {
+	        oldCanvas.remove(); // Eski canvas'ı tamamen kaldır
+	    }
+	
+	    // Yeni canvas oluştur
+	    const newCanvas = document.createElement('canvas');
+	    newCanvas.id = 'profitLossChart';
+	    newCanvas.width = 400;
+	    newCanvas.height = 200;
+	    canvasContainer.appendChild(newCanvas); // Yeni canvas'ı tekrar ekle
+	
+	    // Yeni canvas için context al
+	    const ctx = newCanvas.getContext('2d');
+
 	
 	    // Gerekli değerleri al
 	    const strikePrice = parseFloat(document.getElementById("strike").value);
