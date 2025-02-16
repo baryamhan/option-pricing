@@ -139,11 +139,6 @@
 	    const optionType = document.getElementById("optionType").value;
 	    const premium = x; // Hesaplanan opsiyon fiyatı
 	
-	    if (isNaN(strikePrice) || isNaN(premium)) {
-	        alert("Lütfen önce hesaplama yapın!");
-	        return;
-	    }
-	
 	    // Fiyat seviyelerini belirle (örnek: 10 fiyat seviyesi önce ve sonra)
 	    let priceLevels = [];
 	    for (let i = -10; i <= 10; i++) {
