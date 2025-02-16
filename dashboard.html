@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Opsiyon Fiyatlama</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -110,7 +111,8 @@
                     <h4 class="text-center mb-3">Bilgilendirme Alanı</h4>
 		        <p id="optionDescription" style="font-size: 14px; margin-top: 10px;">
 		            Bilgilendirme hesaplama işlemi bittikten sonra yapılmaktadır.
-		        </p>			
+		        </p>
+			<canvas id="profitLossChart" width="400" height="200"></canvas>
                 </form>
             </div>
         </div>
@@ -129,6 +131,89 @@
             }
         });
 
+	function drawProfitLossChart() {
+	    const ctx = document.getElementById('profitLossChart').getContext('2d');
+	
+	    // Gerekli değerleri al
+	    const strikePrice = parseFloat(document.getElementById("strike").value);
+	    const optionType = document.getElementById("optionType").value;
+	    const premium = parseFloat(document.getElementById("optionPrice").value); // Hesaplanan opsiyon fiyatı
+	
+	    if (isNaN(strikePrice) || isNaN(premium)) {
+	        alert("Lütfen önce hesaplama yapın!");
+	        return;
+	    }
+	
+	    // Fiyat seviyelerini belirle (örnek: 10 fiyat seviyesi önce ve sonra)
+	    let priceLevels = [];
+	    for (let i = -10; i <= 10; i++) {
+	        priceLevels.push(strikePrice + i * 2); // 2'şer fiyat aralıklarıyla
+	    }
+	
+	    // Kâr/Zarar hesaplama
+	    let profitLoss = priceLevels.map(price => {
+	        if (optionType === "Call") {
+	            return Math.max(price - strikePrice, 0) - premium; // Call opsiyon formülü
+	        } else {
+	            return Math.max(strikePrice - price, 0) - premium; // Put opsiyon formülü
+	        }
+	    });
+	
+	    // Başabaş noktası
+	    const breakeven = optionType === "Call"
+	        ? strikePrice + premium // Call için Başabaş = Kullanım fiyatı + Prim
+	        : strikePrice - premium; // Put için Başabaş = Kullanım fiyatı - Prim
+	
+	    // Mevcut grafik varsa önce temizle
+	    if (window.profitLossChart) {
+	        window.profitLossChart.destroy();
+	    }
+	
+	    // Grafik oluştur
+	    window.profitLossChart = new Chart(ctx, {
+	        type: 'line',
+	        data: {
+	            labels: priceLevels,
+	            datasets: [{
+	                label: 'Kâr/Zarar (P&L)',
+	                data: profitLoss,
+	                borderColor: 'green',
+	                borderWidth: 2,
+	                fill: false
+	            }]
+	        },
+	        options: {
+	            responsive: true,
+	            maintainAspectRatio: false,
+	            plugins: {
+	                annotation: {
+	                    annotations: {
+	                        breakevenLine: {
+	                            type: 'line',
+	                            scaleID: 'x',
+	                            value: breakeven,
+	                            borderColor: 'red',
+	                            borderWidth: 2,
+	                            label: {
+	                                content: 'Başabaş Noktası',
+	                                enabled: true,
+	                                position: 'top'
+	                            }
+	                        }
+	                    }
+	                }
+	            },
+	            scales: {
+	                x: {
+	                    title: { display: true, text: 'Dayanak Varlık Fiyatı' }
+	                },
+	                y: {
+	                    title: { display: true, text: 'Kâr/Zarar' }
+	                }
+	            }
+	        }
+	    });
+	}	    
 	function updateOptionDescription() {
 	    // Seçili hisse adı
 	    const assetElement = document.getElementById("asset");
@@ -373,6 +458,7 @@ function calculateOptionPrice() {
         });
 
 	updateOptionDescription();
+    	drawProfitLossChart(); // Grafiği çağır
 
 }
 
