@@ -160,9 +160,10 @@
 	        ? strikePrice + premium // Call için Başabaş = Kullanım fiyatı + Prim
 	        : strikePrice - premium; // Put için Başabaş = Kullanım fiyatı - Prim
 	
-	    // Mevcut grafik varsa önce temizle
-	    if (window.profitLossChart && typeof window.profitLossChart.destroy === "function") {
+	    // Eğer önceki grafik varsa, önce onu yok et
+	    if (window.profitLossChart) {
 	        window.profitLossChart.destroy();
+	        window.profitLossChart = null; // Değişkeni sıfırla
 	    }
 	
 	    // Grafik oluştur
