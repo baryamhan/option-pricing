@@ -187,12 +187,6 @@
 	        window.profitLossChart = null; // Değişkeni sıfırla
 	    }
 
-	    console.log("strikePrice:", strikePrice);
-	    console.log("optionPrice (premium):", premium);
-	    console.log("priceLevels:", priceLevels);
-	    console.log("profitLoss (ilk hesaplama):", profitLoss);
-	    console.log(`Profit/Loss Calculation -> Price: ${price}, Strike: ${strikePrice}, P/L: ${Math.max(price - strikePrice, 0) - premium}`);
-
 	    // Grafik oluştur
 	    window.profitLossChart = new Chart(ctx, {
 	        type: 'line',
