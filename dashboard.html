@@ -233,9 +233,21 @@
 	
 	    const optionType = optionTypeElement.value;
 	    const action = optionType === "Call" ? "ALMA" : "SATMA";
+
+	    // Vade sonu tarihini al ve gg aaaa yyyy formatına çevir
+	    const expiryElement = document.getElementById("expiry");
+	    let expiryDateFormatted = "belirtilmemiş"; // Varsayılan metin
 	
+	    if (expiryElement && expiryElement.value) {
+	        const expiryDate = new Date(expiryElement.value);
+	        const day = expiryDate.getDate().toString().padStart(2, '0'); // Gün (2 haneli)
+	        const month = expiryDate.toLocaleString('tr-TR', { month: 'long' }); // Ay (Tam Ad)
+	        const year = expiryDate.getFullYear(); // Yıl
+	        expiryDateFormatted = `${day} ${month} ${year}`; // "gg aaaa yyyy" formatında
+	    }
+		
 	    // Açıklama metni oluştur
-	    const description = `Fiyatladığınız opsiyon yatırımcının <b>${assetName}</b> hissesini <b>${strikePrice}</b> fiyatından <b>${action} HAKKINI</b> kurumumuza satmak istediği anlamına gelmektedir.`;
+	    const description = `Fiyatladığınız opsiyon yatırımcının <b>${assetName}</b> hissesini <b>${strikePrice} TL</b> fiyatından, <b>${expiryDateFormatted}</b> tarihinde <b>${action} HAKKINI</b> kurumumuza satmak istediği anlamına gelmektedir.`;
 	
 	    // Açıklama metnini ikinci formdaki <p> etiketi içine yaz
 	    document.getElementById("optionDescription").innerHTML = description;
