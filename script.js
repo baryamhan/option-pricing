@@ -10,7 +10,6 @@
         });
 
 	function activateOptionDescription() {
-	    updateOptionDescription();	
 	    const descriptionElement = document.getElementById("optionDescription");
 	
 	    // Eğer opsiyon fiyatı hesaplanmamışsa, uyarı ver
@@ -22,10 +21,20 @@
 	    // Gerekli değişkenleri al
 	    const assetName = document.getElementById("asset").value;
 	    const strikePrice = parseFloat(document.getElementById("strike").value).toFixed(2);
-	    const expiryDate = document.getElementById("expiry").value;
 	    const premium = parseFloat(document.getElementById("optionPrice").value).toFixed(2);
 	    const optionType = document.getElementById("optionType").value;
+
+	    // Vade sonu tarihini al ve gg aaaa yyyy formatına çevir
+	    const expiryElement = document.getElementById("expiry");
+	    let expiryDateFormatted = "belirtilmemiş"; // Varsayılan metin
 	
+	    if (expiryElement && expiryElement.value) {
+	        const expiryDate = new Date(expiryElement.value);
+	        const day = expiryDate.getDate().toString().padStart(2, '0'); // Gün (2 haneli)
+	        const month = expiryDate.toLocaleString('tr-TR', { month: 'long' }); // Ay (Tam Ad)
+	        const year = expiryDate.getFullYear(); // Yıl
+	        expiryDateFormatted = `${day} ${month} ${year}`; // "gg aaaa yyyy" formatında
+	    }
 	    // Başabaş fiyatını hesapla
 	    const breakeven = optionType === "Call" 
 	        ? (parseFloat(strikePrice) + parseFloat(premium)).toFixed(2) 
@@ -34,19 +43,19 @@
 	    // Senaryoları oluştur
 	    const scenario1 = `
 	        Senaryo 1: <br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDate}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
+	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
 	        ${optionType === "Call" ? "düşük" : "yüksek"} ise yatırımcı <b>${premium} TL</b> kadar net kar elde eder.
 	    `;
 	
 	    const scenario2 = `
 	        Senaryo 2: <br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDate}</b> tarihinde <b>${breakeven} TL</b> fiyatına eşit ise 
+	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatına eşit ise 
 	        yatırımcı başta elde ettiği <b>${premium} TL</b> opsiyon primini kaybetse de nette herhangi bir kar veya zararı olmaz.
 	    `;
 	
 	    const scenario3 = `
 	        Senaryo 3: <br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDate}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
+	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
 	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla fiyat arasındaki fark kadar zarar eder. 
 	        Elde ettiği opsiyon primiyle bu zararı sınırlar.
 	    `;
@@ -157,51 +166,6 @@
 	        }
 	    });
 	}	    
-	function updateOptionDescription() {
-	    // Seçili hisse adı
-	    const assetElement = document.getElementById("asset");
-	    if (!assetElement) return;
-	
-	    const assetName = assetElement.value;
-	
-	    // Kullanım fiyatı (2 ondalık basamak)
-	    const strikeElement = document.getElementById("strike");
-	    if (!strikeElement) return;
-	
-	    const strikePrice = parseFloat(strikeElement.value).toFixed(2);
-	
-	    // Call veya Put seçimi
-	    const optionTypeElement = document.getElementById("optionType");
-	    if (!optionTypeElement) return;
-	
-	    const optionType = optionTypeElement.value;
-	    const action = optionType === "Call" ? "ALMA" : "SATMA";
-
-	    // Vade sonu tarihini al ve gg aaaa yyyy formatına çevir
-	    const expiryElement = document.getElementById("expiry");
-	    let expiryDateFormatted = "belirtilmemiş"; // Varsayılan metin
-	
-	    if (expiryElement && expiryElement.value) {
-	        const expiryDate = new Date(expiryElement.value);
-	        const day = expiryDate.getDate().toString().padStart(2, '0'); // Gün (2 haneli)
-	        const month = expiryDate.toLocaleString('tr-TR', { month: 'long' }); // Ay (Tam Ad)
-	        const year = expiryDate.getFullYear(); // Yıl
-	        expiryDateFormatted = `${day} ${month} ${year}`; // "gg aaaa yyyy" formatında
-	    }
-
-	    // Opsiyon fiyatını al (virgülden sonra 2 hane)
-	    const optionPriceElement = document.getElementById("optionPrice").value;
-	    let optionPriceFormatted = "belirtilmemiş"; // Varsayılan değer
-	
-	    if (optionPriceElement && optionPriceElement.value) {
-	        optionPriceFormatted = parseFloat(optionPriceElement.value).toFixed(2) + " TL";
-	    }		
-	    // Açıklama metni oluştur
-	    const description = `Fiyatladığınız opsiyon yatırımcının <b>${optionPriceFormatted}</b> karşılığında <b>${assetName}</b> hissesini <b>${expiryDateFormatted}</b> tarihinde <b>${strikePrice} TL</b> fiyatıyla <b>${action} HAKKINI</b> kurumumuza satmak istediği anlamına gelmektedir.`;
-	
-	    // Açıklama metnini ikinci formdaki <p> etiketi içine yaz
-	    document.getElementById("optionDescription").innerHTML = description;
-	}	
 	    
         function loadDataForUser(user) {
             const jsonFile = user === "YBA" 
