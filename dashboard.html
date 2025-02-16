@@ -134,7 +134,7 @@
             }
         });
 
-	function drawProfitLossChart() {
+	function drawProfitLossChart(x) {
 	    window.profitLossChart = null;
 	    const canvasContainer = document.getElementById('canvasContainer');
 	
@@ -158,7 +158,7 @@
 	    // Gerekli değerleri al
 	    const strikePrice = parseFloat(document.getElementById("strike").value);
 	    const optionType = document.getElementById("optionType").value;
-	    const premium = document.getElementById("optionPrice").value; // Hesaplanan opsiyon fiyatı
+	    const premium = x; // Hesaplanan opsiyon fiyatı
 	
 	    // Fiyat seviyelerini belirle (örnek: 10 fiyat seviyesi önce ve sonra)
 	    let priceLevels = [];
@@ -231,7 +231,7 @@
 	        }
 	    });
 	}	    
-	function updateOptionDescription() {
+	function updateOptionDescription(x) {
 	    // Seçili hisse adı
 	    const assetElement = document.getElementById("asset");
 	    if (!assetElement) return;
@@ -264,7 +264,7 @@
 	    }
 
 	    // Opsiyon fiyatını al (virgülden sonra 2 hane)
-	    const optionPriceElement = document.getElementById("optionPrice").value;
+	    const optionPriceElement = x;
 	    let optionPriceFormatted = "belirtilmemiş"; // Varsayılan değer
 	
 	    if (optionPriceElement && optionPriceElement.value) {
@@ -366,18 +366,8 @@
 
     document.getElementById("expiry").addEventListener("change", calculateDaysToExpiry);
 
-async function runOptionCalculation() {
-    try {
-        await calculateOptionPrice(); // Hesaplamanın bitmesini bekle
-        updateOptionDescription();
-        drawProfitLossChart();
-    } catch (error) {
-        console.error("Hata:", error);
-    }
-}
-
-// Butona tıklandığında çağır
-document.getElementById("calculateButton").addEventListener("click", runOptionCalculation);
+    document.getElementById("optionPrice").addEventListener("change", updateOptionDescription(document.getElementById("optionPrice").value);
+    document.getElementById("optionPrice").addEventListener("change", drawProfitLossChart(document.getElementById("optionPrice").value);
 
 function normalCDF(x) {
     // Standart normal dağılım fonksiyonu (N(x)) için Gauss hata fonksiyonu yaklaşımı
