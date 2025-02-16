@@ -132,6 +132,7 @@
         });
 
 	function drawProfitLossChart(x) {
+	    window.profitLossChart = null;
 	    const ctx = document.getElementById('profitLossChart').getContext('2d');
 	
 	    // Gerekli değerleri al
@@ -160,7 +161,7 @@
 	        : strikePrice - premium; // Put için Başabaş = Kullanım fiyatı - Prim
 	
 	    // Mevcut grafik varsa önce temizle
-	    if (window.profitLossChart) {
+	    if (window.profitLossChart && typeof window.profitLossChart.destroy === "function") {
 	        window.profitLossChart.destroy();
 	    }
 	
