@@ -131,13 +131,13 @@
             }
         });
 
-	function drawProfitLossChart() {
+	function drawProfitLossChart(x) {
 	    const ctx = document.getElementById('profitLossChart').getContext('2d');
 	
 	    // Gerekli değerleri al
 	    const strikePrice = parseFloat(document.getElementById("strike").value);
 	    const optionType = document.getElementById("optionType").value;
-	    const premium = parseFloat(document.getElementById("optionPrice").value); // Hesaplanan opsiyon fiyatı
+	    const premium = x; // Hesaplanan opsiyon fiyatı
 	
 	    if (isNaN(strikePrice) || isNaN(premium)) {
 	        alert("Lütfen önce hesaplama yapın!");
@@ -214,7 +214,7 @@
 	        }
 	    });
 	}	    
-	function updateOptionDescription() {
+	function updateOptionDescription(x) {
 	    // Seçili hisse adı
 	    const assetElement = document.getElementById("asset");
 	    if (!assetElement) return;
@@ -247,7 +247,7 @@
 	    }
 
 	    // Opsiyon fiyatını al (virgülden sonra 2 hane)
-	    const optionPriceElement = document.getElementById("optionPrice");
+	    const optionPriceElement = x;
 	    let optionPriceFormatted = "belirtilmemiş"; // Varsayılan değer
 	
 	    if (optionPriceElement && optionPriceElement.value) {
@@ -476,8 +476,8 @@ function calculateOptionPrice() {
             alert("Veriler yüklenirken hata oluştu.");
         });
 
-	updateOptionDescription();
-    	drawProfitLossChart(); // Grafiği çağır
+	updateOptionDescription(optionPrice);
+    	drawProfitLossChart(optionPrice); // Grafiği çağır
 
 }
 
