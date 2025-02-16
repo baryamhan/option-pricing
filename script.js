@@ -9,8 +9,8 @@
             }
         });
 
-	function activateOptionDescription(x) {
-	    updateOptionDescription(x);	
+	function activateOptionDescription() {
+	    updateOptionDescription();	
 	    const descriptionElement = document.getElementById("optionDescription");
 	
 	    // Eğer opsiyon fiyatı hesaplanmamışsa, uyarı ver
@@ -23,7 +23,7 @@
 	    const assetName = document.getElementById("asset").value;
 	    const strikePrice = parseFloat(document.getElementById("strike").value).toFixed(2);
 	    const expiryDate = document.getElementById("expiry").value;
-	    const premium = parseFloat(x).toFixed(2);
+	    const premium = parseFloat(document.getElementById("optionPrice").value).toFixed(2);
 	    const optionType = document.getElementById("optionType").value;
 	
 	    // Başabaş fiyatını hesapla
@@ -60,7 +60,7 @@
 	}
 
 
-	function drawProfitLossChart(x) {
+	function drawProfitLossChart() {
 	    window.profitLossChart = null;
 	    const canvasContainer = document.getElementById('canvasContainer');
 	
@@ -83,7 +83,7 @@
 	    // Gerekli değerleri al
 	    const strikePrice = parseFloat(document.getElementById("strike").value);
 	    const optionType = document.getElementById("optionType").value;
-	    const premium = parseFloat(x); // Hesaplanan opsiyon fiyatı
+	    const premium = parseFloat(document.getElementById("optionPrice").value); // Hesaplanan opsiyon fiyatı
 	
 	    // Fiyat seviyelerini belirle (örnek: 10 fiyat seviyesi önce ve sonra)
 	    priceLevels = [];
@@ -157,7 +157,7 @@
 	        }
 	    });
 	}	    
-	function updateOptionDescription(x) {
+	function updateOptionDescription() {
 	    // Seçili hisse adı
 	    const assetElement = document.getElementById("asset");
 	    if (!assetElement) return;
@@ -190,7 +190,7 @@
 	    }
 
 	    // Opsiyon fiyatını al (virgülden sonra 2 hane)
-	    const optionPriceElement = x;
+	    const optionPriceElement = document.getElementById("optionPrice").value;
 	    let optionPriceFormatted = "belirtilmemiş"; // Varsayılan değer
 	
 	    if (optionPriceElement && optionPriceElement.value) {
@@ -417,5 +417,5 @@
 	            console.error("Hata:", error);
 	            alert("Veriler yüklenirken hata oluştu.");
 	        });
-		activateOptionDescription(optionPrice);
+		activateOptionDescription();
 	}
