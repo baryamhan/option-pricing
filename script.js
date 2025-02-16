@@ -10,6 +10,7 @@
         });
 
 	function activateOptionDescription() {
+	    updateOptionDescription();	
 	    const descriptionElement = document.getElementById("optionDescription");
 	
 	    // Eğer opsiyon fiyatı hesaplanmamışsa, uyarı ver
@@ -55,6 +56,7 @@
 	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 3 senaryo aşağıdaki gibidir:<br><br>
 	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3}
 	    `;
+	    drawProfitLossChart();
 	}
 
 
