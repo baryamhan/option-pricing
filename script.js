@@ -53,7 +53,7 @@
 	        const expiryDate = new Date(expiryElement.value);
 		    
 	        if (expiryDate < dividendDate) {
-	            dividendMessage = `<b>Temettü bu opsiyonu etkilememektedir.</b><br><br>`;
+	            dividendMessage = `<b>Beklenen temettü tarihi opsiyonun vade tarihinden sonra olduğu için temettü bu opsiyonu etkilememektedir.</b><br><br>`;
 	        } else {
 	            dividendMessage = `<b>Bu hissede beklenen bir temettü vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
 	        }
@@ -65,19 +65,19 @@
 	
 	    // Senaryoları oluştur
 	    const scenario1 = `
-	        Senaryo 1: <br>
+	        <b style="color: red;">Senaryo 1:</b><br>
 	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
 	        ${optionType === "Call" ? "düşük" : "yüksek"} ise yatırımcı <b>${premium} TL</b> kadar net kar elde eder.
 	    `;
 	
 	    const scenario2 = `
-	        Senaryo 2: <br>
+	        <b style="color: red;">Senaryo 2:</b><br>
 	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatına eşit ise 
 	        yatırımcı opsiyondan elde ettiği <b>${premium} TL</b> opsiyon primini kaybetse de nette herhangi bir kar veya zararı olmaz.
 	    `;
 	
 	    const scenario3 = `
-	        Senaryo 3: <br>
+	        <b style="color: red;">Senaryo 3:</b><br>
 	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatından 
 	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla başabaş fiyatı arasındaki fark kadar net zarar eder. 
 	        Aşağıdaki grafikte potansiyel kar zarar durumu görülebilir:
