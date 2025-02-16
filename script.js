@@ -63,9 +63,9 @@
 	
 	    const scenario3 = `
 	        Senaryo 3: <br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
-	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla fiyat arasındaki fark kadar zarar eder. 
-	        Elde ettiği opsiyon primiyle bu zararı sınırlar. Aşağıdaki grafikte potansiyel kar zarar durumu görülebilir:
+	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatından 
+	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla başabaş fiyatı arasındaki fark kadar net zarar eder. 
+	        Aşağıdaki grafikte potansiyel kar zarar durumu görülebilir:
 	    `;
 	
 	    // Açıklama metnini güncelle
