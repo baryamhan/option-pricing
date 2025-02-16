@@ -245,9 +245,16 @@
 	        const year = expiryDate.getFullYear(); // Yıl
 	        expiryDateFormatted = `${day} ${month} ${year}`; // "gg aaaa yyyy" formatında
 	    }
-		
+
+	    // Opsiyon fiyatını al (virgülden sonra 2 hane)
+	    const optionPriceElement = document.getElementById("optionPrice");
+	    let optionPriceFormatted = "belirtilmemiş"; // Varsayılan değer
+	
+	    if (optionPriceElement && optionPriceElement.value) {
+	        optionPriceFormatted = parseFloat(optionPriceElement.value).toFixed(2) + " TL";
+	    }		
 	    // Açıklama metni oluştur
-	    const description = `Fiyatladığınız opsiyon yatırımcının <b>${assetName}</b> hissesini <b>${strikePrice} TL</b> fiyatından, <b>${expiryDateFormatted}</b> tarihinde <b>${action} HAKKINI</b> kurumumuza satmak istediği anlamına gelmektedir.`;
+	    const description = `Fiyatladığınız opsiyon yatırımcının <b>${optionPriceFormatted}</b> karşılığında <b>${assetName}</b> hissesini <b>${strikePrice} TL</b> fiyatından <b>${expiryDateFormatted}</b> tarihinde <b>${action} HAKKINI</b> kurumumuza satmak istediği anlamına gelmektedir.`;
 	
 	    // Açıklama metnini ikinci formdaki <p> etiketi içine yaz
 	    document.getElementById("optionDescription").innerHTML = description;
