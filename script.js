@@ -72,7 +72,7 @@
 		
 	    const scenario2 = `
 	        <b style="color: red;">Senaryo 2:</b><br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatı ile <b>${strikePrice} TL</b> 
+	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> ile <b>${strikePrice} TL</b> 
 	        arasında ise yatırımcı başta elde ettiği <b>${premium} TL</b> opsiyon priminden aradaki fark kadar olan kısmını kaybeder.
 	    `;
 		
