@@ -493,10 +493,10 @@ function calculateOptionPrice() {
             alert("Veriler yüklenirken hata oluştu.");
         });
 
-    	console.log("Opsiyon fiyatı hesaplandı:", optionPrice);
+    	console.log("Opsiyon fiyatı hesaplandı:", document.getElementById("optionPrice").value);
 
-	updateOptionDescription(optionPrice);
-    	drawProfitLossChart(optionPrice); // Grafiği çağır
+	updateOptionDescription(document.getElementById("optionPrice").value);
+    	drawProfitLossChart(document.getElementById("optionPrice").value); // Grafiği çağır
 
 }
 
