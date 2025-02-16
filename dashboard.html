@@ -366,8 +366,10 @@
 
     document.getElementById("expiry").addEventListener("change", calculateDaysToExpiry);
 
-    document.getElementById("optionPrice").addEventListener("change", updateOptionDescription(document.getElementById("optionPrice").value);
-    document.getElementById("optionPrice").addEventListener("change", drawProfitLossChart(document.getElementById("optionPrice").value);
+document.getElementById("optionPrice").addEventListener("input", function () {
+    updateOptionDescription(optionPrice);
+    drawProfitLossChart(optionPrice);
+});
 
 function normalCDF(x) {
     // Standart normal dağılım fonksiyonu (N(x)) için Gauss hata fonksiyonu yaklaşımı
