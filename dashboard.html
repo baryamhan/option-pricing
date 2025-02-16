@@ -169,9 +169,9 @@
 	    // Kâr/Zarar hesaplama
 	    let profitLoss = priceLevels.map(price => {
 	        if (optionType === "Call") {
-	            return Math.max(price - strikePrice, 0) - premium; // Call opsiyon formülü
+	            return Math.min(strikePrice - Price, 0) + premium; // Call opsiyon formülü
 	        } else {
-	            return Math.max(strikePrice - price, 0) - premium; // Put opsiyon formülü
+	            return Math.min(price - strikePrice, 0) + premium; // Put opsiyon formülü
 	        }
 	    });
 	
