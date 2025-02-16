@@ -10,9 +10,11 @@
         });
 
 	document.getElementById("calculateButton").addEventListener("click", function () {
+	    this.disabled = true; // Butonu geçici olarak devre dışı bırak
 	    setTimeout(() => {
-	        document.getElementById("calculateButton").click();
-	    }, 100); // 100 milisaniye sonra ikinci kez tıklama tetiklenir
+	        calculateOptionPrice(); // Opsiyon fiyatını hesapla
+	        this.disabled = false; // 100ms sonra butonu tekrar aktif et
+	    }, 100);
 	});
 
 	function activateOptionDescription() {
