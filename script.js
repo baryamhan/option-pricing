@@ -261,8 +261,8 @@
 	    
         function loadDataForUser(user) {
             const jsonFile = user === "YBA" 
-                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
-                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
+                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/yba.json"
+                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/sube.json";
 
             fetchData(jsonFile);
         }
