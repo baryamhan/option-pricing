@@ -53,9 +53,9 @@
 	        const expiryDate = new Date(expiryElement.value);
 		    
 	        if (expiryDate < dividendDate) {
-	            dividendMessage = `<b>Beklenen temettü tarihi opsiyonun vade tarihinden sonra olduğu için temettü bu opsiyonu etkilememektedir.</b><br><br>`;
+	            dividendMessage = `<b>Beklenen temettü tarihi opsiyonun vade tarihinden sonra olduğu için temettü bu opsiyonun fiyatlamasını etkilememektedir.</b><br><br>`;
 	        } else {
-	            dividendMessage = `<b>Bu hissede beklenen bir temettü vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
+	            dividendMessage = `<b>Bu hissede fiyatı etkileyen bir tarihte beklenen bir temettü vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
 	        }
 	    }
 	    // Başabaş fiyatını hesapla
