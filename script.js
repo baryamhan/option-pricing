@@ -98,7 +98,7 @@
 	        <b style="color: red;">Senaryo 4:</b><br>
 	        Eğer <b>${assetName}</b> ${priceType} <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatından 
 	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla başabaş fiyatı arasındaki fark kadar net zarar eder. 
-	        Aşağıdaki grafikte potansiyel kar zarar durumu görülebilir:
+	        <br>Aşağıdaki grafikte potansiyel kar zarar durumu görülebilir:
 	    `;
 
 	// İşlem onay metnini oluştur
