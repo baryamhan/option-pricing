@@ -28,8 +28,8 @@
 	
 	    // Gerekli değişkenleri al
 	    const assetName = document.getElementById("asset").value;
-	    const strikePrice = parseFloat(document.getElementById("strike").value).toFixed(2);
-	    const premium = parseFloat(document.getElementById("optionPrice").value).toFixed(2);
+	    const strikePrice = parseFloat(document.getElementById("strike").value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	    const premium = parseFloat(document.getElementById("optionPrice").value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	    const optionType = document.getElementById("optionType").value;
 
 	    // Vade sonu tarihini al ve gg aaaa yyyy formatına çevir
@@ -60,8 +60,8 @@
 	    }
 	    // Başabaş fiyatını hesapla
 	    const breakeven = optionType === "Call" 
-	        ? (parseFloat(strikePrice) + parseFloat(premium)).toFixed(2) 
-	        : (parseFloat(strikePrice) - parseFloat(premium)).toFixed(2);
+	        ? (parseFloat(strikePrice) + parseFloat(premium)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
+	        : (parseFloat(strikePrice) - parseFloat(premium)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	
 	    // Senaryoları oluştur
 	    const scenario1 = `
@@ -90,7 +90,7 @@
 	    `;
 
 	// İşlem onay metnini oluştur
-	    const refPrice = parseFloat(document.getElementById("spotPrice").value).toFixed(2);
+	    const refPrice = parseFloat(document.getElementById("spotPrice").value).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	    const delta = 50; // Varsayılan delta değeri
     	    const contractAmount = parseInt(document.getElementById("cSize").value) || 1; // Kullanıcının girdiği kontrat sayısı
 	    const expiryFormatted = expiryDateFormatted.split(" ")[0] + expiryDateFormatted.split(" ")[1].substring(0, 3); // "28Feb" gibi format
