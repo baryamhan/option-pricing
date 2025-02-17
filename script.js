@@ -102,9 +102,10 @@
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
      		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b>
-		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;"><br><br>
+		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;">
 		    ${orderMessage}
 		</span>
+  		<br>
 		<button type="button" onclick="copyOrderText()" class="btn btn-secondary">Metni Kopyala</button>
 		<br><br>
      		${dividendMessage}
