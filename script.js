@@ -17,6 +17,8 @@
 	    }, 100);
 	});
 
+
+
 	function activateOptionDescription() {
 	    const descriptionElement = document.getElementById("optionDescription");
 	
@@ -53,9 +55,9 @@
 	        const expiryDate = new Date(expiryElement.value);
 		    
 	        if (expiryDate < dividendDate) {
-	            dividendMessage = `<b>Beklenen temettü tarihi opsiyonun vade tarihinden sonra olduğu için temettü bu opsiyonun fiyatlamasını etkilememektedir.</b><br><br>`;
+	            dividendMessage = `Beklenen temettü tarihi opsiyonun vade tarihinden sonra olduğu için <b>temettü</b> bu opsiyonun fiyatlamasını <b>etkilememektedir.</b><br><br>`;
 	        } else {
-	            dividendMessage = `<b>Bu hissede fiyatı etkileyen bir tarihte beklenen bir temettü vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
+	            dividendMessage = `<b>Bu hissede <b>fiyatı etkileyen</b> bir tarihte beklenen bir <b>temettü</b> vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
 	        }
 	    }
 	    // Başabaş fiyatını hesapla
@@ -88,16 +90,41 @@
 	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla başabaş fiyatı arasındaki fark kadar net zarar eder. 
 	        Aşağıdaki grafikte potansiyel kar zarar durumu görülebilir:
 	    `;
-	
+
+	// İşlem onay metnini oluştur
+	    const refPrice = parseFloat(document.getElementById("spotPrice").value).toFixed(2);
+	    const delta = 50; // Varsayılan delta değeri
+	    const expiryFormatted = expiryDateFormatted.split(" ")[0] + expiryDateFormatted.split(" ")[1].substring(0, 3); // "28Feb" gibi format
+	    const optionCode = `${assetName}-${expiryFormatted}-${optionType}-${strikePrice}`;
+	    const orderMessage = `"${optionCode} @${premium} (${refPrice}ref, ${delta}d) ${contractAmount}c için DONE"`;
+    	    const contractAmount = parseInt(document.getElementById("contractAmount").value) || 1; // Kullanıcının girdiği kontrat sayısı
+
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
      		${dividendMessage}
 	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 4 senaryo aşağıdaki gibidir:<br><br>
 	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3} <br><br> ${scenario4}
+		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b><br>
+		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;">
+		    ${orderMessage}
+		</span>
+		<br><br>
+		<button	        
 	    `;
 	    drawProfitLossChart();
 	}
 
+	function copyOrderText() {
+	    const orderTextElement = document.getElementById("orderText");
+	    const textToCopy = orderTextElement.innerText;
+	
+	    navigator.clipboard.writeText(textToCopy).then(() => {
+	        alert("Metin başarıyla kopyalandı!");
+	    }).catch(err => {
+	        console.error("Metin kopyalanırken hata oluştu:", err);
+	        alert("Metin kopyalanamadı, lütfen manuel olarak seçip kopyalayın.");
+	    });
+	}
 
 	function drawProfitLossChart() {
 	    window.profitLossChart = null;
