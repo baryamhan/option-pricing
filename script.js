@@ -105,8 +105,8 @@
 		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;"><br><br>
 		    ${orderMessage}
 		</span>
+    		<button onclick="copyOrderText()" class="btn btn-secondary">Metni Kopyala</button>
 		<br><br>
-		<button>
      		${dividendMessage}
 	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 4 senaryo aşağıdaki gibidir:<br><br>
 	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3} <br><br> ${scenario4}	        
