@@ -105,7 +105,7 @@
 		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;"><br><br>
 		    ${orderMessage}
 		</span>
-    		<button onclick="copyOrderText()" class="btn btn-secondary">Metni Kopyala</button>
+		<button type="button" onclick="copyOrderText()" class="btn btn-secondary">Metni Kopyala</button>
 		<br><br>
      		${dividendMessage}
 	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 4 senaryo aşağıdaki gibidir:<br><br>
@@ -115,6 +115,9 @@
 	}
 
 	function copyOrderText() {
+	    if (event) {
+	        event.preventDefault(); // Sayfanın yenilenmesini engelle
+	    }
 	    const orderTextElement = document.getElementById("orderText");
 	    const textToCopy = orderTextElement.innerText;
 	
