@@ -130,7 +130,7 @@
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
     		${optionTypeMessage}<br>
-    		Yatırımcının alacağı prim ${assetName.toUpperCase() === "USDTRY" ? "her 1 dolar" : assetName.toUpperCase() === "XU030" ? "endeks başına" : "hisse başına"} <b>${premium} TL</b>, toplamda <b>${totalPremiumEarned} TL</b>'dir.
+    		Yatırımcının alacağı prim ${assetName.toUpperCase() === "USDTRY" ? "her 1 dolar" : assetName.toUpperCase() === "XU030" ? "endeks başına" : "hisse başına"} <b>${premium} TL</b>, <b>${contractAmount} kontrat</b> için toplamda <b>${totalPremiumEarned} TL</b>'dir.
       		<br><br>
      		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b>
 		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;">
