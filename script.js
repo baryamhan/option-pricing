@@ -58,6 +58,18 @@
 	            dividendMessage = `<b>Bu hissede <b>fiyatı etkileyen</b> bir tarihte beklenen bir <b>temettü</b> vardır, lütfen yatırımcının bunun farkında olduğundan emin olunuz.</b><br><br>`;
 	        }
 	    }
+
+	    // Dayanak varlığa göre fiyat türünü belirleyelim
+	    let priceType;
+	    if (assetName.toUpperCase() === "XU030") {
+	        priceType = "endeks değeri";
+	    } else if (assetName.toUpperCase() === "USDTRY") {
+	        priceType = "döviz kuru";
+	    } else {
+	        priceType = "hisse fiyatı";
+	    }
+				
+
 	    // Başabaş fiyatını hesapla
 	    const breakeven = optionType === "Call" 
 	        ? (parseFloat(strikePrice) + parseFloat(premium)).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
@@ -66,25 +78,25 @@
 	    // Senaryoları oluştur
 	    const scenario1 = `
 	        <b style="color: red;">Senaryo 1:</b><br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
+	        Eğer <b>${assetName}</b> ${priceType} <b>${expiryDateFormatted}</b> tarihinde <b>${strikePrice} TL</b> fiyatından 
 	        ${optionType === "Call" ? "düşük" : "yüksek"} ise yatırımcı <b>${premium} TL</b> kadar net kar elde eder.
 	    `;
 		
 	    const scenario2 = `
 	        <b style="color: red;">Senaryo 2:</b><br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> ile <b>${strikePrice} TL</b> 
+	        Eğer <b>${assetName}</b> ${priceType} <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> ile <b>${strikePrice} TL</b> 
 	        arasında ise yatırımcı başta elde ettiği <b>${premium} TL</b> opsiyon priminden aradaki fark kadar olan kısmını kaybeder.
 	    `;
 		
 	    const scenario3 = `
 	        <b style="color: red;">Senaryo 3:</b><br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatına eşit ise 
+	        Eğer <b>${assetName}</b> ${priceType} <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatına eşit ise 
 	        yatırımcı opsiyondan elde ettiği <b>${premium} TL</b> opsiyon primini kaybetse de nette herhangi bir kar veya zararı olmaz.
 	    `;
 	
 	    const scenario4 = `
 	        <b style="color: red;">Senaryo 4:</b><br>
-	        Eğer <b>${assetName}</b> hissesi <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatından 
+	        Eğer <b>${assetName}</b> ${priceType} <b>${expiryDateFormatted}</b> tarihinde <b>${breakeven} TL</b> fiyatından 
 	        ${optionType === "Call" ? "yüksek" : "düşük"} ise yatırımcı kullanım fiyatıyla başabaş fiyatı arasındaki fark kadar net zarar eder. 
 	        Aşağıdaki grafikte potansiyel kar zarar durumu görülebilir:
 	    `;
