@@ -101,15 +101,15 @@
 
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
-     		${dividendMessage}
-	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 4 senaryo aşağıdaki gibidir:<br><br>
-	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3} <br><br> ${scenario4}
-		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b><br>
-		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;">
+     		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b><br>
+		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;"><br><br>
 		    ${orderMessage}
 		</span>
 		<br><br>
-		<button	        
+		<button>
+     		${dividendMessage}
+	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 4 senaryo aşağıdaki gibidir:<br><br>
+	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3} <br><br> ${scenario4}	        
 	    `;
 	    drawProfitLossChart();
 	}
