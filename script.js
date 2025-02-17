@@ -261,8 +261,8 @@
 	    
         function loadDataForUser(user) {
             const jsonFile = user === "YBA" 
-                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/yba.json"
-                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/sube.json";
+                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
+                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
 
             fetchData(jsonFile);
         }
@@ -388,8 +388,8 @@
 	    // ✅ Kullanıcı giriş bilgisine göre doğru JSON dosyasını seçiyoruz
 	    const loggedInUser = localStorage.getItem("loggedInUser");
 	    const jsonFile = loggedInUser === "YBA"
-	        ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/yba.json"
-	        : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/sube.json";
+	        ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
+	        : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
 	
 	    fetch(jsonFile)
 	        .then(response => response.json())
