@@ -99,8 +99,28 @@
 	    const optionCode = `${assetName}-${expiryFormatted}-${optionType}-${strikePrice}`;
 	    const orderMessage = `"${optionCode} @${premium} (${refPrice}ref, ${delta}d) ${contractAmount}c için DONE"`;
 
+	    let optionTypeMessage = "";
+	    let multiplier = 100; // Varsayılan: Hisse opsiyonları (100)
+	
+	    if (assetName.toUpperCase() === "XU030") {
+	        optionTypeMessage = `Bu bir <b>endeks opsiyonudur.</b> 1 endeks opsiyonu <b>10</b> endekse karşılık gelmektedir.`;
+	        multiplier = 10;
+	    } else if (assetName.toUpperCase() === "USDTRY") {
+	        optionTypeMessage = `Bu bir <b>döviz opsiyonudur.</b> 1 USDTRY döviz opsiyonu <b>1000</b> dolarlık büyüklüğe karşılık gelmektedir.`;
+	        multiplier = 1000;
+	    } else {
+	        optionTypeMessage = `Bu bir <b>hisse opsiyonudur.</b> 1 hisse opsiyonu <b>100</b> hisseye karşılık gelmektedir.`;
+	        multiplier = 100;
+	    }
+	
+	    // Toplam kontrat büyüklüğü ve prim kazancı hesaplamaları
+	    const totalUnits = contractAmount * multiplier;
+	    const totalPremiumEarned = (totalUnits * premium).toFixed(2);
+
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
+    		${optionTypeMessage}<br>
+    		Yatırımcının alacağı prim ${assetName.toUpperCase() === "USDTRY" ? "her 1 dolar" : assetName.toUpperCase() === "XU030" ? "endeks başına" : "hisse başına"} <b>${premium} TL</b>, toplamda <b>${totalPremiumEarned} TL</b>'dir.
      		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b>
 		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;">
 		    ${orderMessage}
