@@ -465,7 +465,7 @@
 		    }
 			
 		    // ✅ Delta değerini ekrana yazdır
-		    document.getElementById("deltaValue").value = delta.toFixed(2) * 100;
+		    document.getElementById("deltaValue").value = parseFloat(delta * 100).toFixed(0);
 			
 	            let optionPrice;
 	
