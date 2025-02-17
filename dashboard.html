@@ -100,11 +100,18 @@
                     </div>
         
                     <div class="form-group row">
-                        <label for="optionPrice" class="col-sm-5 col-form-label text-left">Önerilen Opsiyon Fiyatı:</label>
-                        <div class="col-sm-7">
-                            <input type="text" id="optionPrice" readonly class="form-control font-weight-bold">
-                        </div>
-                    </div>
+			<!-- Önerilen Opsiyon Fiyatı -->
+			<label for="optionPrice" class="col-sm-5 col-form-label text-left">Önerilen Opsiyon Fiyatı:</label>
+			<div class="col-sm-3">
+			    <input type="text" id="optionPrice" readonly class="form-control font-weight-bold">
+			</div>
+			
+			    <!-- Opsiyon Delta -->
+			<label for="deltaValue" class="col-sm-2 col-form-label text-left">Delta:</label>
+			<div class="col-sm-2">
+			    <input type="text" id="deltaValue" readonly class="form-control font-weight-bold" placeholder="--">
+			</div>
+		    </div>
         
 		    <div class="text-center mt-4 d-flex justify-content-center">
 		        <button type="button" id="calculateButton" class="btn btn-primary me-2" onclick="calculateOptionPrice()">Hesapla</button>
