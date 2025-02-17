@@ -442,7 +442,19 @@
 	            // ✅ Black-Scholes d1 ve d2 hesaplamaları
 	            const d1 = (Math.log(adjustedSpotPrice / strike) + (interestRate + (adjustedVolatility ** 2) / 2) * T) / (adjustedVolatility * Math.sqrt(T));
 	            const d2 = d1 - adjustedVolatility * Math.sqrt(T);
-	
+		    const Nd1 = normalCDF(d1); // N(d1)
+		
+		    // ✅ Delta hesaplaması (Call & Put)
+		    let delta;
+		    if (optionType === "Call") {
+		        delta = Nd1;
+		    } else {
+		        delta = Nd1 - 1;
+		    }
+			
+		    // ✅ Delta değerini ekrana yazdır
+		    document.getElementById("deltaValue").value = delta.toFixed(2) * 100;
+			
 	            let optionPrice;
 	
 	            if (optionType === "Call") {
