@@ -17,8 +17,6 @@
 	    }, 100);
 	});
 
-
-
 	function activateOptionDescription() {
 	    const descriptionElement = document.getElementById("optionDescription");
 	
@@ -103,13 +101,13 @@
 	    let multiplier = 100; // Varsayılan: Hisse opsiyonları (100)
 	
 	    if (assetName.toUpperCase() === "XU030") {
-	        optionTypeMessage = `Bu bir <b>endeks opsiyonudur.</b> 1 endeks opsiyonu <b>10</b> endekse karşılık gelmektedir.`;
+	        optionTypeMessage = `Bu bir <b>endeks opsiyonudur.</b> 1 kontrat endeks opsiyonu <b>10</b> endekse karşılık gelmektedir.`;
 	        multiplier = 10;
 	    } else if (assetName.toUpperCase() === "USDTRY") {
-	        optionTypeMessage = `Bu bir <b>döviz opsiyonudur.</b> 1 USDTRY döviz opsiyonu <b>1000</b> dolarlık büyüklüğe karşılık gelmektedir.`;
+	        optionTypeMessage = `Bu bir <b>döviz opsiyonudur.</b> 1 kontrat USDTRY döviz opsiyonu <b>1000</b> dolarlık büyüklüğe karşılık gelmektedir.`;
 	        multiplier = 1000;
 	    } else {
-	        optionTypeMessage = `Bu bir <b>hisse opsiyonudur.</b> 1 hisse opsiyonu <b>100</b> hisseye karşılık gelmektedir.`;
+	        optionTypeMessage = `Bu bir <b>hisse opsiyonudur.</b> 1 kontrat hisse opsiyonu <b>100</b> hisseye karşılık gelmektedir.`;
 	        multiplier = 100;
 	    }
 	
