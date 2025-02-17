@@ -115,12 +115,13 @@
 	
 	    // Toplam kontrat büyüklüğü ve prim kazancı hesaplamaları
 	    const totalUnits = contractAmount * multiplier;
-	    const totalPremiumEarned = (totalUnits * premium).toFixed(2);
+	    const totalPremiumEarned = (totalUnits * premium).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
     		${optionTypeMessage}<br>
     		Yatırımcının alacağı prim ${assetName.toUpperCase() === "USDTRY" ? "her 1 dolar" : assetName.toUpperCase() === "XU030" ? "endeks başına" : "hisse başına"} <b>${premium} TL</b>, toplamda <b>${totalPremiumEarned} TL</b>'dir.
+      		<br>
      		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b>
 		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;">
 		    ${orderMessage}
