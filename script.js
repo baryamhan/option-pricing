@@ -94,10 +94,10 @@
 	// İşlem onay metnini oluştur
 	    const refPrice = parseFloat(document.getElementById("spotPrice").value).toFixed(2);
 	    const delta = 50; // Varsayılan delta değeri
+    	    const contractAmount = parseInt(document.getElementById("cSize").value) || 1; // Kullanıcının girdiği kontrat sayısı
 	    const expiryFormatted = expiryDateFormatted.split(" ")[0] + expiryDateFormatted.split(" ")[1].substring(0, 3); // "28Feb" gibi format
 	    const optionCode = `${assetName}-${expiryFormatted}-${optionType}-${strikePrice}`;
 	    const orderMessage = `"${optionCode} @${premium} (${refPrice}ref, ${delta}d) ${contractAmount}c için DONE"`;
-    	    const contractAmount = parseInt(document.getElementById("contractAmount").value) || 1; // Kullanıcının girdiği kontrat sayısı
 
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
