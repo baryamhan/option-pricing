@@ -262,7 +262,7 @@
         function loadDataForUser(user) {
             const jsonFile = user === "YBA" 
                 ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/yba.json"
-                : "http://localhost:3000/json/sube.json";
+                : "https://option-pricing-2590953718d2.herokuapp.com/json/sube.json";
 
             fetchData(jsonFile);
         }
@@ -389,7 +389,7 @@
 	    const loggedInUser = localStorage.getItem("loggedInUser");
 	    const jsonFile = loggedInUser === "YBA"
 	        ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/yba.json"
-	        : "http://localhost:3000/json/sube.json";
+	        : "https://option-pricing-2590953718d2.herokuapp.com/json/sube.json";
 	
 	    fetch(jsonFile)
 	        .then(response => response.json())
