@@ -14,7 +14,7 @@
 	    setTimeout(() => {
 	        calculateOptionPrice(); // Opsiyon fiyatını hesapla
 	        this.disabled = false; // 100ms sonra butonu tekrar aktif et
-	    }, 100);
+	    }, 200);
 	});
 
 	function activateOptionDescription() {
