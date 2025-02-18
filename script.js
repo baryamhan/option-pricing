@@ -133,16 +133,17 @@
 	    // Açıklama metnini güncelle
 	    descriptionElement.innerHTML = `
     		${optionTypeMessage}<br>
-    		Yatırımcının alacağı prim ${assetName.toUpperCase() === "USDTRY" ? "her 1 dolar" : assetName.toUpperCase() === "XU030" ? "endeks başına" : "hisse başına"} <b>${premium} TL</b>, <b>${contractAmount} kontrat</b> için toplamda <b>${totalPremiumEarned} TL</b>'dir.
+    		Yatırımcının alacağı prim ${assetName.toUpperCase() === "USDTRY" ? "her 1 dolar için" : assetName.toUpperCase() === "XU030" ? "endeks başına" : "hisse başına"} <b>${premium} TL</b>, <b>${contractAmount} kontrat</b> için toplamda <b>${totalPremiumEarned} TL</b>'dir.
       		<br><br>
-     		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b>
+     		${dividendMessage}
+       		<br><br>
+     		<b>Tüm kontrolleri yaptıktan sonra eğer bu işlemi gerçekleştirmek istiyorsanız lütfen aşağıdaki metni kopyalayıp satış yetkilisine iletiniz:</b><br>
 		<span id="orderText" style="display: inline-block; background-color: #f4f4f4; padding: 5px; border-radius: 5px; font-family: monospace;">
 		    ${orderMessage}
 		</span>
   		<br>
 		<button type="button" onclick="copyOrderText()" class="btn btn-secondary">Metni Kopyala</button>
 		<br><br>
-     		${dividendMessage}
 	        Opsiyonun başabaş fiyatı <b>${breakeven} TL</b>'dir. Buna göre oluşan 4 senaryo aşağıdaki gibidir:<br><br>
 	        ${scenario1} <br><br> ${scenario2} <br><br> ${scenario3} <br><br> ${scenario4}	        
 	    `;
