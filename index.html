@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AK Yatırım Türev Masası Opsiyon Fiyatlama Sayfası</title>
+    <title>Giriş Sayfası</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="login-container">
-        <h2>AK Yatırım Türev Masası Opsiyon Fiyatlama Sayfası</h2>
-        <label for="username"><strong>Kullanıcı Adı:</strong></label>
+        <h2>Giriş Yap</h2>
+        <label for="username">Kullanıcı Adı:</label>
         <input type="text" id="username" placeholder="Kullanıcı Adınızı Girin">
 
-        <label for="password"><strong>Şifre:</strong></label>
+        <label for="password">Şifre:</label>
         <input type="password" id="password" placeholder="Şifrenizi Girin">
 
         <button onclick="login()">Giriş Yap</button>
@@ -29,13 +29,18 @@
             // Kullanıcı listesi
             const users = {
                 "YBA": "turev",
-                "sube": "turev"
+                "sube": "turev",
+                "admin": "admin" // Admin kullanıcı adı ve şifresi
             };
 
             if (users[username] && users[username] === password) {
-                // Başarılı giriş, kullanıcıyı yönlendir
                 localStorage.setItem("loggedInUser", username);
-                window.location.href = "dashboard.html"; // Giriş sonrası yönlendirilecek sayfa
+
+                if (username === "admin") {
+                    window.location.href = "admin.html"; // Admin sayfasına yönlendir
+                } else {
+                    window.location.href = "dashboard.html"; // Normal kullanıcılar için dashboard
+                }
             } else {
                 document.getElementById("login-message").innerText = "Geçersiz kullanıcı adı veya şifre!";
             }
