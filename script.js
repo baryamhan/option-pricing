@@ -52,7 +52,7 @@
 	        const dividendDate = new Date(dividendDateInput.value);
 	        const expiryDate = new Date(expiryElement.value);
 	        const today = new Date();
-		const dividend = parseFloat(document.getElementById("dividend").value).toFixed(2)
+		const dividend = parseFloat(document.getElementById("dividend").value)
 	        if (expiryDate < dividendDate) {
 	            dividendMessage = `Beklenen temettü tarihi opsiyonun vade tarihinden sonra olduğu için <b>temettü</b> bu opsiyonun fiyatlamasını <b>etkilememektedir.</b><br><br>`;
 	        } else if (dividend === 0) {
