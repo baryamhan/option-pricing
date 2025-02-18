@@ -261,8 +261,8 @@
 	    
         function loadDataForUser(user) {
             const jsonFile = user === "YBA" 
-                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
-                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
+                ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/yba.json"
+                : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/sube.json";
 
             fetchData(jsonFile);
         }
@@ -388,8 +388,8 @@
 	    // ✅ Kullanıcı giriş bilgisine göre doğru JSON dosyasını seçiyoruz
 	    const loggedInUser = localStorage.getItem("loggedInUser");
 	    const jsonFile = loggedInUser === "YBA"
-	        ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/yba.json"
-	        : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@main/sube.json";
+	        ? "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/yba.json"
+	        : "https://cdn.jsdelivr.net/gh/baryamhan/option-pricing@latest/sube.json";
 	
 	    fetch(jsonFile)
 	        .then(response => response.json())
@@ -487,3 +487,36 @@
 	        });
 		activateOptionDescription();
 	}
+
+
+	async function uploadExcel(inputId, jsonFileName) {
+	    const fileInput = document.getElementById(inputId);
+	    const uploadMessage = document.getElementById("uploadMessage");
+	
+	    if (fileInput.files.length === 0) {
+	        uploadMessage.innerText = "Lütfen bir dosya seçin!";
+	        uploadMessage.style.color = "red";
+	        return;
+	    }
+	
+	    const file = fileInput.files[0];
+	    const formData = new FormData();
+	    formData.append("file", file);
+	    formData.append("jsonFileName", jsonFileName);
+	
+	    try {
+	        const response = await fetch("http://localhost:3000/upload-excel", {
+	            method: "POST",
+	            body: formData
+	        });
+	
+	        const result = await response.json();
+	        uploadMessage.innerText = `Dosya "${file.name}" başarıyla JSON'a çevrildi: ${result.jsonFile}`;
+	        uploadMessage.style.color = "green";
+	    } catch (error) {
+	        console.error("Dosya yükleme hatası:", error);
+	        uploadMessage.innerText = "Dosya yüklenirken hata oluştu!";
+	        uploadMessage.style.color = "red";
+	    }
+	}
+
