@@ -12,45 +12,26 @@
         <h2>Admin Paneli</h2>
         <p>Buradan dosya yükleyebilirsiniz.</p>
 
-        <input type="file" id="fileInput">
-        <button onclick="uploadFile()">Dosyayı Yükle</button>
+        <!-- YBA Dosyası Yükleme -->
+        <label for="ybaFile">YBA Excel Yükle:</label>
+        <input type="file" id="ybaFile" accept=".xlsx">
+        <button onclick="uploadExcel('ybaFile', 'yba.json')">YBA'yı Yükle</button>
+
+        <br><br>
+
+        <!-- Şube Dosyası Yükleme -->
+        <label for="subeFile">Şube Excel Yükle:</label>
+        <input type="file" id="subeFile" accept=".xlsx">
+        <button onclick="uploadExcel('subeFile', 'sube.json')">Şubeyi Yükle</button>
+
+        <br><br>
 
         <p id="uploadMessage"></p>
         
         <button onclick="logout()">Çıkış Yap</button>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const loggedInUser = localStorage.getItem("loggedInUser");
-            if (loggedInUser !== "admin") {
-                alert("Bu sayfaya erişim yetkiniz yok!");
-                window.location.href = "index.html";
-            }
-        });
-
-        function uploadFile() {
-            const fileInput = document.getElementById("fileInput");
-            const uploadMessage = document.getElementById("uploadMessage");
-
-            if (fileInput.files.length === 0) {
-                uploadMessage.innerText = "Lütfen bir dosya seçin!";
-                uploadMessage.style.color = "red";
-                return;
-            }
-
-            const file = fileInput.files[0];
-            uploadMessage.innerText = `Dosya "${file.name}" başarıyla yüklendi!`;
-            uploadMessage.style.color = "green";
-
-            // Gerçek bir backend bağlantısı varsa buraya AJAX ile yükleme kodu eklenebilir
-        }
-
-        function logout() {
-            localStorage.removeItem("loggedInUser");
-            window.location.href = "index.html";
-        }
-    </script>
+    <script src="script.js"></script>
 
 </body>
 </html>
