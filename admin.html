@@ -3,134 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Paneli - Volatilite ve Temettü Güncelleme</title>
-    <link rel="stylesheet" href="admin.css">
+    <title>Admin Paneli</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Admin Paneli</h1>
+    <div class="admin-container">
+        <h2>Admin Paneli</h2>
+        <p>Buradan dosya yükleyebilirsiniz.</p>
 
-    <!-- Faiz Oranı Girişi -->
-    <label for="interest_rate">Faiz Oranı (%):</label>
-    <input type="number" step="0.01" id="interest_rate" placeholder="Örn: 5.0" />
+        <input type="file" id="fileInput">
+        <button onclick="uploadFile()">Dosyayı Yükle</button>
 
-    <h2>Dayanak Varlıklar</h2>
-
-    <!-- Dayanak Varlık Listesi -->
-    <table>
-        <thead>
-            <tr>
-                <th>Dayanak Varlık</th>
-                <th>Volatilite (%)</th>
-                <th>Temettü Değeri</th>
-                <th>Temettü Tarihi</th>
-            </tr>
-        </thead>
-        <tbody id="assets_list"></tbody>
-    </table>
-
-    <button onclick="updateParameters()">Güncelle</button>
-
-    <div id="message"></div>
+        <p id="uploadMessage"></p>
+        
+        <button onclick="logout()">Çıkış Yap</button>
+    </div>
 
     <script>
-        // Dayanak varlıklar listesi
-        const underlyingAssets = [
-            "AKBNK", "ALARK", "ARCLK", "ASELS", "BIMAS", "EKGYO", "ENKAI", "EREGL",
-            "FROTO", "GARAN", "HALKB", "ISCTR", "KCHOL", "KRDMD", "PETKM", "PGSUS",
-            "SAHOL", "SISE", "TAVHL", "TCELL", "THYAO", "TOASO", "TTKOM", "TUPRS",
-            "USDTRY", "VAKBN", "XU030", "YKBNK"
-        ];
-
-        // Varsayılan veriler (Eğer yoksa localStorage'dan al)
-        const optionData = JSON.parse(localStorage.getItem("optionData")) || {
-            interest_rate: 50.0,
-            assets: {}
-        };
-
-        // Varsayılan değerleri ayarla
-        underlyingAssets.forEach(asset => {
-            if (!optionData.assets[asset]) {
-                optionData.assets[asset] = { volatility: 20, dividend: 0.0, date: "" };
+        document.addEventListener("DOMContentLoaded", () => {
+            const loggedInUser = localStorage.getItem("loggedInUser");
+            if (loggedInUser !== "admin") {
+                alert("Bu sayfaya erişim yetkiniz yok!");
+                window.location.href = "index.html";
             }
         });
 
-        // Sayfaya varlıkları yükle
-        function loadAssets() {
-            document.getElementById("interest_rate").value = optionData.interest_rate;
-            const assetsTable = document.getElementById("assets_list");
-            assetsTable.innerHTML = "";
+        function uploadFile() {
+            const fileInput = document.getElementById("fileInput");
+            const uploadMessage = document.getElementById("uploadMessage");
 
-            underlyingAssets.forEach(asset => {
-                const row = document.createElement("tr");
+            if (fileInput.files.length === 0) {
+                uploadMessage.innerText = "Lütfen bir dosya seçin!";
+                uploadMessage.style.color = "red";
+                return;
+            }
 
-                // Dayanak Varlık (Sadece gösterilecek, değiştirilemez)
-                const assetCell = document.createElement("td");
-                assetCell.innerText = asset;
-                row.appendChild(assetCell);
+            const file = fileInput.files[0];
+            uploadMessage.innerText = `Dosya "${file.name}" başarıyla yüklendi!`;
+            uploadMessage.style.color = "green";
 
-                // Volatilite (%)
-                const volCell = document.createElement("td");
-                const volInput = document.createElement("input");
-                volInput.type = "number";
-                volInput.step = "1.00";
-                volInput.value = optionData.assets[asset].volatility;
-                volInput.id = `volatility_${asset}`;
-                volCell.appendChild(volInput);
-                row.appendChild(volCell);
-
-                // Temettü Değeri
-                const divCell = document.createElement("td");
-                const divInput = document.createElement("input");
-                divInput.type = "number";
-                divInput.step = "0.01";
-                divInput.value = optionData.assets[asset].dividend;
-                divInput.id = `dividend_${asset}`;
-                divCell.appendChild(divInput);
-                row.appendChild(divCell);
-
-                // Temettü Tarihi (Tarih Seçimi)
-                const dateCell = document.createElement("td");
-                const dateInput = document.createElement("input");
-                dateInput.type = "date";
-                dateInput.value = optionData.assets[asset].date;
-                dateInput.id = `date_${asset}`;
-                dateCell.appendChild(dateInput);
-                row.appendChild(dateCell);
-
-                assetsTable.appendChild(row);
-            });
+            // Gerçek bir backend bağlantısı varsa buraya AJAX ile yükleme kodu eklenebilir
         }
 
-        // Güncelleme işlemi
-        function updateParameters() {
-            // Faiz oranını al
-            const newInterestRate = parseFloat(document.getElementById("interest_rate").value);
-            optionData.interest_rate = newInterestRate;
-
-            underlyingAssets.forEach(asset => {
-                // Kullanıcıdan yeni verileri al
-                const newVolatility = parseFloat(document.getElementById(`volatility_${asset}`).value);
-                const newDividend = parseFloat(document.getElementById(`dividend_${asset}`).value);
-                const newDate = document.getElementById(`date_${asset}`).value;
-
-                // Yeni verileri sakla
-                optionData.assets[asset] = {
-                    volatility: newVolatility,
-                    dividend: newDividend,
-                    date: newDate
-                };
-            });
-
-            // Tarayıcıda sakla
-            localStorage.setItem("optionData", JSON.stringify(optionData));
-
-            document.getElementById("message").innerText = "Güncelleme Başarılı!";
-            document.getElementById("message").style.color = "green";
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "index.html";
         }
-
-        // Sayfa açıldığında varlıkları yükle
-        window.onload = loadAssets;
     </script>
 
 </body>
